@@ -46,6 +46,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
       wget \
       git \
       tree \
+      cron \
       apache2 \
       libapache2-mod-php${PHP_VERSION} \
       mariadb-server \
