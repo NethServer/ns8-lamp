@@ -93,6 +93,7 @@ ADD run.sh /run.sh
 RUN chmod 755 /*.sh
 ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+ADD supervisord-cron.conf /etc/supervisor/conf.d/supervisord-cron.conf
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 
 # Remove pre-installed database
