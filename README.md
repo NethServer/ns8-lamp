@@ -145,6 +145,24 @@ nano /etc/mysql/conf.d/myqsl.cnf
 nano /etc/mysql/conf.d/myqsldump.cnf
 ```
 
+## cron
+
+To enable a cron task, use the command `crontab -e`. The cron task is stored under ./crontabs in the module folder and is automatically included in the backup.
+
+Syntax of a Cron Job:
+```
+* * * * * command_to_execute
+- - - - -
+| | | | |
+| | | | +---- Day of the week (0 - 7, Sunday is 0 or 7)
+| | | +------ Month (1 - 12)
+| | +-------- Day of the month (1 - 31)
+| +---------- Hour (0 - 23)
++------------ Minute (0 - 59)
+```
+
+you can verify the cron by `crontab -l`
+
 ## Install
 
 Instantiate the module with:
