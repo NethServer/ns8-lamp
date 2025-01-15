@@ -46,6 +46,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
       wget \
       git \
       tree \
+      cron \
       apache2 \
       libapache2-mod-php${PHP_VERSION} \
       mariadb-server \
@@ -92,6 +93,7 @@ ADD run.sh /run.sh
 RUN chmod 755 /*.sh
 ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+ADD supervisord-cron.conf /etc/supervisor/conf.d/supervisord-cron.conf
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 
 # Remove pre-installed database
