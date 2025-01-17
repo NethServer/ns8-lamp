@@ -147,7 +147,7 @@ nano /etc/mysql/conf.d/myqsldump.cnf
 
 ## cron
 
-To enable a cron task, use the command `crontab -e`. The cron task is stored under ./crontabs in the module folder and is automatically included in the backup.
+To enable a cron task, use the command `podman exec -ti apache2-app crontab -e`. The cron task is stored under ./crontabs in the module folder and is automatically included in the backup.
 
 Syntax of a Cron Job:
 ```
@@ -161,7 +161,7 @@ Syntax of a Cron Job:
 +------------ Minute (0 - 59)
 ```
 
-you can verify the cron by `crontab -l`
+you can verify the cron by `podman exec -ti apache2-app crontab -l`
 
 ## Install
 
