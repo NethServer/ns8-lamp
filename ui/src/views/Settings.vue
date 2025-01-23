@@ -176,6 +176,8 @@
                     :label="$t('settings.php_upload_max_filesize')"
                     v-model="php_upload_max_filesize"
                     type="number"
+                    :min="100"
+                    :max="2048"
                     :placeholder="
                       $t('settings.php_upload_max_filesize_placeholder')
                     "
@@ -195,6 +197,7 @@
                     v-model="php_memory_limit"
                     type="number"
                     :min="512"
+                    :max="4096"
                     :placeholder="
                       $t('settings.php_memory_limit_placeholder')
                     "
@@ -206,7 +209,7 @@
                     :helper-text="$t('settings.php_memory_limit_helper')"
                   >
                     <template #tooltip>{{
-                      $t("settings.php_upload_max_filesize_tooltip")
+                      $t("settings.php_memory_limit_tooltip")
                     }}</template>
                   </NsTextInput>
                 </template>
