@@ -65,7 +65,12 @@
     "mysql_user_db_placeholder": "Enter MySQL database name",
     "mysql_user_db_tooltip": "Name of the MySQL database to create",
     "mysql_user_db_helper": "This database cannot be changed from the UI once set, use phpMyAdmin",
-    "phpmyadmin_enabled": "Enable phpMyAdmin"
+    "phpmyadmin_enabled": "Enable phpMyAdmin",
+    "php_memory_limit": "PHP memory limit",
+    "php_memory_limit_helper": "This value is in MB",
+    "php_memory_limit_placeholder": "Enter PHP memory limit",
+    "php_memory_limit_tooltip": "Maximum amount of memory a script may consume"
+
   },
   "about": {
     "title": "About"
