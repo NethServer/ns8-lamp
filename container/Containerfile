@@ -115,7 +115,9 @@ RUN echo "Updating settings for PHP ${PHP_VERSION}" && \
         -e "s/^max_execution_time.*/max_execution_time = ${PHP_MAX_EXECUTION_TIME}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
         -e "s/^;date.timezone.*/date.timezone = Europe\/London/" /etc/php/${PHP_VERSION}/apache2/php.ini \
         -e "s|;sendmail_path =|sendmail_path = /usr/sbin/ssmtp -t|" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e  "s/;date.timezone =/date.timezone = UTC/g" /etc/php/${PHP_VERSION}/cli/php.ini
+        -e  "s/;date.timezone =/date.timezone = UTC/g" /etc/php/${PHP_VERSION}/cli/php.ini \
+        -e "s|^;error_log = syslog|error_log = /dev/stderr|" /etc/php/${PHP_VERSION}/apache2/php.ini \
+        -e "s|^;error_log = syslog|error_log = /dev/stderr|" /etc/php/${PHP_VERSION}/cli/php.ini
 
 # Add composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
