@@ -176,6 +176,8 @@
                     :label="$t('settings.php_upload_max_filesize')"
                     v-model="php_upload_max_filesize"
                     type="number"
+                    :min="100"
+                    :max="2048"
                     :placeholder="
                       $t('settings.php_upload_max_filesize_placeholder')
                     "
@@ -188,6 +190,26 @@
                   >
                     <template #tooltip>{{
                       $t("settings.php_upload_max_filesize_tooltip")
+                    }}</template>
+                  </NsTextInput>
+                  <NsTextInput
+                    :label="$t('settings.php_memory_limit')"
+                    v-model="php_memory_limit"
+                    type="number"
+                    :min="512"
+                    :max="4096"
+                    :placeholder="
+                      $t('settings.php_memory_limit_placeholder')
+                    "
+                    :disabled="
+                      loading.getConfiguration || loading.configureModule
+                    "
+                    :invalid-message="$t(error.php_memory_limit)"
+                    ref="php_memory_limit"
+                    :helper-text="$t('settings.php_memory_limit_helper')"
+                  >
+                    <template #tooltip>{{
+                      $t("settings.php_memory_limit_tooltip")
                     }}</template>
                   </NsTextInput>
                 </template>
@@ -252,6 +274,7 @@ export default {
       phpmyadmin_enabled: true,
       create_mysql_user: false,
       php_upload_max_filesize: "100",
+      php_memory_limit: "512",
       mysql_user_name: "",
       mysql_user_db: "",
       mysql_user_pass: "",
@@ -272,6 +295,7 @@ export default {
         mysql_user_pass: "",
         mysql_admin_pass: "",
         php_upload_max_filesize: "",
+        php_memory_limit: "",
       },
     };
   },
@@ -347,6 +371,7 @@ export default {
       this.loading.getConfiguration = false;
       this.create_mysql_user = config.create_mysql_user;
       this.php_upload_max_filesize = config.php_upload_max_filesize;
+      this.php_memory_limit = config.php_memory_limit;
       this.phpmyadmin_enabled = config.phpmyadmin_enabled;
       this.focusElement("host");
     },
@@ -469,6 +494,7 @@ export default {
             mysql_admin_pass: this.mysql_admin_pass,
             create_mysql_user: this.create_mysql_user,
             php_upload_max_filesize: this.php_upload_max_filesize,
+            php_memory_limit: this.php_memory_limit,
             phpmyadmin_enabled: this.phpmyadmin_enabled,
           },
           extra: {

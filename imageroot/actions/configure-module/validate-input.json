@@ -77,6 +77,11 @@
       "title": "PHP upload max filesize",
       "description": "Maximum size of uploaded files"
     },
+    "php_memory_limit": {
+      "type": "string",
+      "title": "PHP memory limit",
+      "description": "Maximum amount of memory a script may consume"
+    },
     "phpmyadmin_enabled": {
       "type": "boolean",
       "title": "phpMyAdmin enabled",

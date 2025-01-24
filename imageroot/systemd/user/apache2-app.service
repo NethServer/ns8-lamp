@@ -39,6 +39,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --env MYSQL_ADMIN_PASS=${MYSQL_ADMIN_PASS} \
     --env PHP_POST_MAX_SIZE=${PHP_UPLOAD_MAX_FILESIZE} \
     --env PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE} \
+    --env PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT} \
     --env PHPMYADMIN_ENABLED=${PHPMYADMIN_ENABLED} \
     ${LAMP_SERVER_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/apache2-app.ctr-id -t 10
