@@ -1,57 +1,103 @@
 {
-    "error": {
-        "403": "Operation nicht zugelassen",
-        "cannot_retrieve_installed_modules": "installierte Module nicht abrufbar",
-        "401": "fehlerhafte Anmeldung",
-        "cannot_retrieve_module_info": "Modulinfo nicht abrufbar",
-        "generic_error": "Etwas ist schief gegangen",
-        "error": "Fehler",
-        "network_timeout": "Netzwerk Timeout",
-        "404": "Ressource nicht gefunden",
-        "network_error": "Netzwerkfehler",
-        "validation_error": "Fehlerhafte Prüfung"
-    },
-    "settings": {
-        "test_field": "Testfeld",
-        "configure_instance": "{instance} konfigurieren",
-        "save": "Speichern",
-        "title": "Einstellungen"
-    },
-    "common": {
-        "required": "erforderlich",
-        "work_in_progress": "In Arbeit",
-        "processing": "Ausführung..."
-    },
-    "status": {
-        "created": "erstellt",
-        "size": "Größe",
-        "name": "Name",
-        "no_images": "Keine Abbilder",
-        "app_volumes": "App Volumen | App Volumen",
-        "services": "Dienst | Dienste",
-        "app_images": "App-Abbild | App-Abbilder",
-        "no_services": "Keine Dienste",
-        "app_instance": "App-Instanz",
-        "mount": "Einbindepunkt",
-        "title": "Status",
-        "installation_node": "Knoten der Installation",
-        "node": "Knoten",
-        "no_volumes": "keine Volumen"
-    },
-    "about": {
-        "title": "Über"
-    },
-    "action": {
-        "list-backup-repositories": "Liste der Datensicherungs-Speicherort",
-        "get-module-info": "Informationen zum Modul abrufen",
-        "list-installed-modules": "installierte Module auflisten",
-        "list-backups": "Datensicherungen auflisten",
-        "get-status": "Status abfragen",
-        "configure-module": "Modul konfigurieren",
-        "get-configuration": "Konfiguration abrufen",
-        "get-name": "Name abrufen"
-    },
-    "task": {
-        "cannot_create_task": "{task} kann nicht erstellt werden"
-    }
+  "common": {
+    "required": "Erforderlich",
+    "work_in_progress": "Arbeit in Bearbeitung",
+    "processing": "Wird bearbeitet...",
+    "required_min_length8": "Erforderlich und muss mindestens 8 Zeichen lang sein"
+  },
+  "status": {
+    "title": "Status",
+    "app_instance": "App-Instanz",
+    "services": "Dienst | Dienste",
+    "app_images": "App-Bild | App-Bilder",
+    "app_volumes": "App-Volume | App-Volumes",
+    "installation_node": "Installationsknoten",
+    "node": "Knoten",
+    "name": "Name",
+    "size": "Größe",
+    "created": "Erstellt",
+    "mount": "Mounten",
+    "no_services": "Keine Dienste",
+    "no_images": "Keine Bilder",
+    "no_volumes": "Keine Volumes",
+    "lamp_webapp": "LAMP-Webanwendung",
+    "not_configured": "Nicht konfiguriert",
+    "open_webapp": "LAMP-Webanwendung öffnen",
+    "configure": "Konfigurieren",
+    "open_phpmyadmin": "phpMyAdmin öffnen",
+    "configure_mysql_database": "MySQL-Datenbank konfigurieren",
+    "lamp_phpmyadmin": "LAMP phpMyAdmin",
+    "phpmyadmin_disabled": "phpMyAdmin ist deaktiviert"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "configure_instance": "Konfigurieren {instance}",
+    "save": "Speichern",
+    "lamp_fqdn": "LAMP-Hostname (FQDN)",
+    "lets_encrypt": "LE-Zertifikat anfordern",
+    "http_to_https": "HTTPS erzwingen",
+    "enabled": "Aktiviert",
+    "disabled": "Deaktiviert",
+    "advanced": "Erweitert",
+    "configuring": "Konfiguration wird durchgeführt",
+    "instance_configuration": "LAMP konfigurieren",
+    "domain_already_used_in_traefik": "Domain wird bereits in Traefik verwendet",
+    "host_pattern": "Muss ein gültiger vollständig qualifizierter Domainname sein",
+    "host_format": "Muss ein gültiger vollständig qualifizierter Domainname sein",
+    "mysql_admin_pass": "MySQL-Admin-Passwort",
+    "mysql_admin_pass_placeholder": "MySQL-Admin-Passwort eingeben",
+    "mysql_admin_pass_tooltip": "MySQL-Passwort für den Administratorbenutzer der MySQL-Datenbanken",
+    "mysql_admin_pass_helper": "Dieses Passwort kann nach der Festlegung nicht über die UI geändert werden, verwenden Sie phpMyAdmin",
+    "create_mysql_user": "MySQL-Benutzer und Datenbank erstellen",
+    "php_upload_max_filesize": "Maximale PHP-Upload-Dateigröße",
+    "php_upload_max_filesize_placeholder": "Maximale PHP-Upload-Dateigröße eingeben",
+    "php_upload_max_filesize_tooltip": "Maximale Dateigröße, die auf den Server hochgeladen werden kann",
+    "php_upload_max_filesize_helper": "Dieser Wert ist in MB",
+    "mysql_user_name": "MySQL-Benutzername",
+    "mysql_user_name_placeholder": "MySQL-Benutzernamen eingeben",
+    "mysql_user_name_tooltip": "Name des zu erstellenden MySQL-Benutzers",
+    "mysql_user_name_helper": "Dieser Benutzer kann nach der Festlegung nicht über die UI geändert werden, verwenden Sie phpMyAdmin",
+    "mysql_user_pass": "MySQL-Benutzerpasswort",
+    "mysql_user_pass_placeholder": "MySQL-Benutzerpasswort eingeben",
+    "mysql_user_pass_tooltip": "Passwort des zu erstellenden MySQL-Benutzers",
+    "mysql_user_pass_helper": "Dieses Passwort kann nach der Festlegung nicht über die UI geändert werden, verwenden Sie phpMyAdmin",
+    "mysql_user_db": "MySQL-Datenbankname",
+    "mysql_user_db_placeholder": "MySQL-Datenbanknamen eingeben",
+    "mysql_user_db_tooltip": "Name der zu erstellenden MySQL-Datenbank",
+    "mysql_user_db_helper": "Diese Datenbank kann nach der Festlegung nicht über die UI geändert werden, verwenden Sie phpMyAdmin",
+    "phpmyadmin_enabled": "phpMyAdmin aktivieren",
+    "php_memory_limit": "PHP-Speicherlimit",
+    "php_memory_limit_helper": "Dieser Wert ist in MB",
+    "php_memory_limit_placeholder": "PHP-Speicherlimit eingeben",
+    "php_memory_limit_tooltip": "Maximale Menge an Speicher, die ein Skript verbrauchen darf"
+  },
+  "about": {
+    "title": "Über"
+  },
+  "task": {
+    "cannot_create_task": "Aufgabe {action} kann nicht erstellt werden"
+  },
+  "action": {
+    "get-status": "Status abrufen",
+    "get-configuration": "Konfiguration abrufen",
+    "configure-module": "Modul konfigurieren",
+    "get-module-info": "Modulinformationen abrufen",
+    "get-name": "Name abrufen",
+    "list-backup-repositories": "Backup-Repositories auflisten",
+    "list-backups": "Backups auflisten",
+    "list-installed-modules": "Installierte Module auflisten"
+  },
+  "error": {
+    "error": "Fehler",
+    "generic_error": "Etwas ist schiefgelaufen",
+    "validation_error": "Validierungsfehler",
+    "network_error": "Netzwerkfehler",
+    "network_timeout": "Netzwerkzeitüberschreitung",
+    "401": "Ungültige Authentifizierung",
+    "403": "Operation nicht autorisiert",
+    "404": "Ressource nicht gefunden",
+    "cannot_retrieve_module_info": "Modulinformationen können nicht abgerufen werden",
+    "cannot_retrieve_installed_modules": "Installierte Module können nicht abgerufen werden",
+    "cannot_retrieve_configuration": "Konfiguration kann nicht abgerufen werden"
+  }
 }

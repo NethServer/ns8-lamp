@@ -1,57 +1,103 @@
 {
-    "error": {
-        "403": "Operación no autorizada",
-        "cannot_retrieve_installed_modules": "No se pueden recuperar los módulos instalados",
-        "401": "Autentificación no válida",
-        "cannot_retrieve_module_info": "No se puede recuperar la información del módulo",
-        "generic_error": "Algo ha salido mal",
-        "error": "Error",
-        "network_timeout": "Tiempo de espera de red agotado",
-        "404": "Recurso no encontrado",
-        "network_error": "Fallo de red",
-        "validation_error": "Fallo en la validación"
-    },
-    "settings": {
-        "test_field": "Campo de prueba",
-        "configure_instance": "Configurar {instance}",
-        "save": "Guardar",
-        "title": "Ajustes"
-    },
-    "common": {
-        "required": "Obligatorio",
-        "work_in_progress": "En progreso",
-        "processing": "Procesando..."
-    },
-    "status": {
-        "created": "Creado",
-        "size": "Tamaño",
-        "name": "Nombre",
-        "no_images": "No hay imágenes",
-        "app_volumes": "Volúmen de la aplicación | Volúmenes de la aplicación",
-        "services": "Servicio | Servicios",
-        "app_images": "Imagen de la aplicación | Imágenes de la aplicación",
-        "no_services": "No hay servicios",
-        "app_instance": "Instancia de la aplicación",
-        "mount": "Montar",
-        "title": "Estado",
-        "installation_node": "Nodo de instalación",
-        "node": "Nodo",
-        "no_volumes": "No hay volúmenes"
-    },
-    "about": {
-        "title": "Acerca de"
-    },
-    "action": {
-        "list-backup-repositories": "Mostrar repositorios de la copia de seguridad",
-        "get-module-info": "Obtener información del módulo",
-        "list-installed-modules": "Lista de módulos instalados",
-        "list-backups": "Mostrar las copias de seguridad",
-        "get-status": "Obtener el estado",
-        "configure-module": "Configurar módulo",
-        "get-configuration": "Obtener la configuración",
-        "get-name": "Obtener el nombre"
-    },
-    "task": {
-        "cannot_create_task": "No se puede crear la tarea {action}"
-    }
+  "common": {
+    "required": "Requerido",
+    "work_in_progress": "Trabajo en progreso",
+    "processing": "Procesando...",
+    "required_min_length8": "Requerido y debe tener al menos 8 caracteres"
+  },
+  "status": {
+    "title": "Estado",
+    "app_instance": "Instancia de la aplicación",
+    "services": "Servicio | Servicios",
+    "app_images": "Imagen de la aplicación | Imágenes de la aplicación",
+    "app_volumes": "Volumen de la aplicación | Volúmenes de la aplicación",
+    "installation_node": "Nodo de instalación",
+    "node": "Nodo",
+    "name": "Nombre",
+    "size": "Tamaño",
+    "created": "Creado",
+    "mount": "Montar",
+    "no_services": "Sin servicios",
+    "no_images": "Sin imágenes",
+    "no_volumes": "Sin volúmenes",
+    "lamp_webapp": "Aplicación web LAMP",
+    "not_configured": "No configurado",
+    "open_webapp": "Abrir la aplicación web LAMP",
+    "configure": "Configurar",
+    "open_phpmyadmin": "Abrir phpMyAdmin",
+    "configure_mysql_database": "Configurar base de datos MySQL",
+    "lamp_phpmyadmin": "phpMyAdmin LAMP",
+    "phpmyadmin_disabled": "phpMyAdmin está desactivado"
+  },
+  "settings": {
+    "title": "Configuración",
+    "configure_instance": "Configurar {instance}",
+    "save": "Guardar",
+    "lamp_fqdn": "Nombre de host LAMP (FQDN)",
+    "lets_encrypt": "Solicitar certificado LE",
+    "http_to_https": "Forzar HTTPS",
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
+    "advanced": "Avanzado",
+    "configuring": "Configurando",
+    "instance_configuration": "Configurar LAMP",
+    "domain_already_used_in_traefik": "El dominio ya está en uso en Traefik",
+    "host_pattern": "Debe ser un nombre de dominio totalmente calificado válido",
+    "host_format": "Debe ser un nombre de dominio totalmente calificado válido",
+    "mysql_admin_pass": "Contraseña de administrador MySQL",
+    "mysql_admin_pass_placeholder": "Introduzca la contraseña de administrador MySQL",
+    "mysql_admin_pass_tooltip": "Contraseña MySQL para el usuario administrador de las bases de datos MySQL",
+    "mysql_admin_pass_helper": "Esta contraseña no puede cambiarse desde la interfaz una vez establecida, use phpMyAdmin",
+    "create_mysql_user": "Crear usuario y base de datos MySQL",
+    "php_upload_max_filesize": "Tamaño máximo de carga de archivos PHP",
+    "php_upload_max_filesize_placeholder": "Introduzca el tamaño máximo de carga de archivos PHP",
+    "php_upload_max_filesize_tooltip": "Tamaño máximo de los archivos que se pueden cargar en el servidor",
+    "php_upload_max_filesize_helper": "Este valor está en MB",
+    "mysql_user_name": "Nombre de usuario MySQL",
+    "mysql_user_name_placeholder": "Introduzca el nombre de usuario MySQL",
+    "mysql_user_name_tooltip": "Nombre del usuario MySQL a crear",
+    "mysql_user_name_helper": "Este usuario no puede cambiarse desde la interfaz una vez establecido, use phpMyAdmin",
+    "mysql_user_pass": "Contraseña del usuario MySQL",
+    "mysql_user_pass_placeholder": "Introduzca la contraseña del usuario MySQL",
+    "mysql_user_pass_tooltip": "Contraseña del usuario MySQL a crear",
+    "mysql_user_pass_helper": "Esta contraseña no puede cambiarse desde la interfaz una vez establecida, use phpMyAdmin",
+    "mysql_user_db": "Nombre de la base de datos MySQL",
+    "mysql_user_db_placeholder": "Introduzca el nombre de la base de datos MySQL",
+    "mysql_user_db_tooltip": "Nombre de la base de datos MySQL a crear",
+    "mysql_user_db_helper": "Esta base de datos no puede cambiarse desde la interfaz una vez establecida, use phpMyAdmin",
+    "phpmyadmin_enabled": "Habilitar phpMyAdmin",
+    "php_memory_limit": "Límite de memoria PHP",
+    "php_memory_limit_helper": "Este valor está en MB",
+    "php_memory_limit_placeholder": "Introduzca el límite de memoria PHP",
+    "php_memory_limit_tooltip": "La cantidad máxima de memoria que un script puede consumir"
+  },
+  "about": {
+    "title": "Acerca de"
+  },
+  "task": {
+    "cannot_create_task": "No se puede crear la tarea {action}"
+  },
+  "action": {
+    "get-status": "Obtener estado",
+    "get-configuration": "Obtener configuración",
+    "configure-module": "Configurar módulo",
+    "get-module-info": "Obtener información del módulo",
+    "get-name": "Obtener nombre",
+    "list-backup-repositories": "Listar repositorios de copia de seguridad",
+    "list-backups": "Listar copias de seguridad",
+    "list-installed-modules": "Listar módulos instalados"
+  },
+  "error": {
+    "error": "Error",
+    "generic_error": "Algo salió mal",
+    "validation_error": "Error de validación",
+    "network_error": "Error de red",
+    "network_timeout": "Tiempo de espera de red",
+    "401": "Autenticación no válida",
+    "403": "Operación no autorizada",
+    "404": "Recurso no encontrado",
+    "cannot_retrieve_module_info": "No se pueden recuperar la información del módulo",
+    "cannot_retrieve_installed_modules": "No se pueden recuperar los módulos instalados",
+    "cannot_retrieve_configuration": "No se puede recuperar la configuración"
+  }
 }

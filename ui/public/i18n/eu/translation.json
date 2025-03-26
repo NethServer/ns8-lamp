@@ -1,57 +1,103 @@
 {
-    "error": {
-        "403": "Eragiketa baimendu gabea",
-        "cannot_retrieve_installed_modules": "Ezin dira instalatutako moduluak berreskuratu",
-        "401": "Autentifikazio baliogabea",
-        "cannot_retrieve_module_info": "Ezin da moduluaren informazioa berreskuratu",
-        "generic_error": "Zerbait okertu da",
-        "error": "Errorea",
-        "network_timeout": "Sarearen denbora-muga",
-        "404": "Baliabidea ez da aurkitu",
-        "network_error": "Sare-errorea",
-        "validation_error": "Balioztatze-errorea"
-    },
-    "settings": {
-        "test_field": "Proba-eremua",
-        "configure_instance": "{instance} konfiguratu",
-        "save": "Gorde",
-        "title": "Ezarpenak"
-    },
-    "common": {
-        "required": "Beharrezkoa",
-        "work_in_progress": "Lanak martxan",
-        "processing": "Prozesatzen..."
-    },
-    "status": {
-        "created": "Sortuta",
-        "size": "Tamaina",
-        "name": "Izena",
-        "no_images": "Irudirik ez",
-        "app_volumes": "Aplikazioaren bolumena | Aplikazioen bolumenak",
-        "services": "Zerbitzua | Zerbitzuak",
-        "app_images": "Aplikazioaren irudia | Aplikazioen irudiak",
-        "no_services": "Zerbitzurik ez",
-        "app_instance": "Aplikazioaren instantzia",
-        "mount": "Muntatu",
-        "title": "Egoera",
-        "installation_node": "Instalazio-nodoa",
-        "node": "Nodoa",
-        "no_volumes": "Bolumenik ez"
-    },
-    "about": {
-        "title": "Honi buruz"
-    },
-    "action": {
-        "list-backup-repositories": "Babeskopien biltegiak ikusi",
-        "get-module-info": "Moduluaren informazioa berreskuratu",
-        "list-installed-modules": "Instalatutako moduluak ikusi",
-        "list-backups": "Babeskopiak ikusi",
-        "get-status": "Egoera berreskuratu",
-        "configure-module": "Modulua konfiguratu",
-        "get-configuration": "Konfigurazioa berreskuratu",
-        "get-name": "Izena berreskuratu"
-    },
-    "task": {
-        "cannot_create_task": "Ezin da zeregina {action} sortu"
-    }
+  "common": {
+    "required": "Beharrezkoa",
+    "work_in_progress": "Lana prozesuan",
+    "processing": "Prozesatzen...",
+    "required_min_length8": "Beharrezkoa eta gutxienez 8 karakterekoa izan behar da"
+  },
+  "status": {
+    "title": "Egoera",
+    "app_instance": "Aplikazioaren instantzia",
+    "services": "Zerbitzua | Zerbitzuak",
+    "app_images": "Aplikazio irudia | Aplikazio irudiak",
+    "app_volumes": "Aplikazio bolumena | Aplikazio bolumenak",
+    "installation_node": "Instalazio nodoa",
+    "node": "Nodoa",
+    "name": "Izena",
+    "size": "Tamaina",
+    "created": "Sortua",
+    "mount": "Muntatu",
+    "no_services": "Ez dago zerbitzurik",
+    "no_images": "Ez dago irudirik",
+    "no_volumes": "Ez dago bolumenik",
+    "lamp_webapp": "LAMP aplikazioa",
+    "not_configured": "Ez dago konfiguraturik",
+    "open_webapp": "Ireki LAMP aplikazioa",
+    "configure": "Konfiguratu",
+    "open_phpmyadmin": "Ireki phpMyAdmin",
+    "configure_mysql_database": "Konfiguratu MySQL datu-basea",
+    "lamp_phpmyadmin": "LAMP phpMyAdmin",
+    "phpmyadmin_disabled": "phpMyAdmin desgaituta dago"
+  },
+  "settings": {
+    "title": "Ezarpenak",
+    "configure_instance": "{instance} konfiguratu",
+    "save": "Gorde",
+    "lamp_fqdn": "LAMP host izena (FQDN)",
+    "lets_encrypt": "LE Ziurtagiria eskatu",
+    "http_to_https": "HTTPS behartu",
+    "enabled": "Aktibatuta",
+    "disabled": "Desaktibatuta",
+    "advanced": "Aurreratua",
+    "configuring": "Konfiguratzen",
+    "instance_configuration": "LAMP konfiguratu",
+    "domain_already_used_in_traefik": "Domena jadanik Traefiken erabilia",
+    "host_pattern": "Izena ezin da izan, domeinu oso baliodun bat izan behar da",
+    "host_format": "Izena ezin da izan, domeinu oso baliodun bat izan behar da",
+    "mysql_admin_pass": "MySQL administratzailearen pasahitza",
+    "mysql_admin_pass_placeholder": "Sartu MySQL administratzailearen pasahitza",
+    "mysql_admin_pass_tooltip": "MySQL administratzailearen pasahitza datu-baseen kudeatzailearentzat",
+    "mysql_admin_pass_helper": "Pasahitz hau ezin da aldatu UI bidez behin ezarrita, erabili phpMyAdmin",
+    "create_mysql_user": "MySQL erabiltzailea eta datu-basea sortu",
+    "php_upload_max_filesize": "PHP igoerako fitxategiaren tamaina maximoa",
+    "php_upload_max_filesize_placeholder": "Sartu PHP igoerako fitxategiaren tamaina maximoa",
+    "php_upload_max_filesize_tooltip": "Zerberrera igo daitekeen fitxategien tamaina maximoa",
+    "php_upload_max_filesize_helper": "Balio hau MB-n dago",
+    "mysql_user_name": "MySQL erabiltzaile izena",
+    "mysql_user_name_placeholder": "Sartu MySQL erabiltzaile izena",
+    "mysql_user_name_tooltip": "Sortu behar den MySQL erabiltzailearen izena",
+    "mysql_user_name_helper": "Erabiltzaile hau ezin da aldatu UI bidez behin ezarrita, erabili phpMyAdmin",
+    "mysql_user_pass": "MySQL erabiltzailearen pasahitza",
+    "mysql_user_pass_placeholder": "Sartu MySQL erabiltzailearen pasahitza",
+    "mysql_user_pass_tooltip": "Sortu behar den MySQL erabiltzailearen pasahitza",
+    "mysql_user_pass_helper": "Pasahitz hau ezin da aldatu UI bidez behin ezarrita, erabili phpMyAdmin",
+    "mysql_user_db": "MySQL datu-basearen izena",
+    "mysql_user_db_placeholder": "Sartu MySQL datu-basearen izena",
+    "mysql_user_db_tooltip": "Sortu behar den MySQL datu-basearen izena",
+    "mysql_user_db_helper": "Datu-base hau ezin da aldatu UI bidez behin ezarrita, erabili phpMyAdmin",
+    "phpmyadmin_enabled": "Aktibatu phpMyAdmin",
+    "php_memory_limit": "PHP memoria-muga",
+    "php_memory_limit_helper": "Balio hau MB-n dago",
+    "php_memory_limit_placeholder": "Sartu PHP memoria-muga",
+    "php_memory_limit_tooltip": "Script batek kontsumitu dezakeen memoria kopuru maximoa"
+  },
+  "about": {
+    "title": "Deskribapena"
+  },
+  "task": {
+    "cannot_create_task": "Ezin izan da sortu {action} taska"
+  },
+  "action": {
+    "get-status": "Egoera lortu",
+    "get-configuration": "Konfigurazioa lortu",
+    "configure-module": "Modulua konfiguratu",
+    "get-module-info": "Moduluaren informazioa lortu",
+    "get-name": "Izena lortu",
+    "list-backup-repositories": "Ezkutuko biltegiak zerrendatu",
+    "list-backups": "Ezkutuak zerrendatu",
+    "list-installed-modules": "Instalatutako moduluak zerrendatu"
+  },
+  "error": {
+    "error": "Errore",
+    "generic_error": "Zerbait oker joan da",
+    "validation_error": "Balidazio errorea",
+    "network_error": "Sare errorea",
+    "network_timeout": "Sareko denbora-muga",
+    "401": "Autentifikazioa baliogabea",
+    "403": "Operazioa baimenduta ez",
+    "404": "Iturria ez da aurkitu",
+    "cannot_retrieve_module_info": "Moduluaren informazioa lortzen ez da ahal izan",
+    "cannot_retrieve_installed_modules": "Instalatutako moduluak lortzen ez da ahal izan",
+    "cannot_retrieve_configuration": "Konfigurazioa lortzen ez da ahal izan"
+  }
 }
