@@ -16,15 +16,21 @@ repobase="${REPOBASE:-ghcr.io/stephdl}"
 reponame="lamp"
 
 
-PHP_VERSION=8.3
-podman build \
-    --force-rm \
-    --layers \
-    --tag "${repobase}/lamp-server" \
-    --build-arg "PHP_VERSION=${PHP_VERSION}" \
-    container
+# Define PHP versions to build
+PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
 
-images+=("${repobase}/lamp-server")
+# Build images for each PHP version
+for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
+    echo "Building lamp-server for PHP ${PHP_VERSION}..."
+    podman build \
+        --force-rm \
+        --layers \
+        --tag "${repobase}/lamp-server-php${PHP_VERSION}" \
+        --build-arg "PHP_VERSION=${PHP_VERSION}" \
+        container
+
+    images+=("${repobase}/lamp-server-php${PHP_VERSION}")
+done
 
 # Create a new empty container image
 container=$(buildah from scratch)
@@ -50,7 +56,6 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=traefik@node:routeadm cluster:accountconsumer" \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
-    --label="org.nethserver.images=ghcr.io/stephdl/lamp-server:${IMAGETAG}" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
