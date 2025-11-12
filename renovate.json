@@ -6,10 +6,12 @@
     "regexManagers": [
         {
             "fileMatch": ["^container/Containerfile$"],
-            "matchStrings": ["ENV PHPMYADMIN_VERSION=(?<currentValue>.*)"],
+            "matchStrings": [
+                "ENV PHPMYADMIN_VERSION=(?<currentValue>[^\\s]+)"
+            ],
             "datasourceTemplate": "github-releases",
             "depNameTemplate": "phpmyadmin/phpmyadmin",
-            "extractVersionTemplate": "^(?<version>.*)$"
+            "versioningTemplate": "semver"
         }
     ]
 }
