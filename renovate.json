@@ -7,7 +7,8 @@
       ],
       "depNameTemplate": "phpmyadmin/phpmyadmin",
       "datasourceTemplate": "github-tags",
-      "versioningTemplate": "regex:^RELEASE_(?<major>\\d+)_(?<minor>\\d+)_(?<patch>\\d+)$"
+      "versioningTemplate": "regex:^RELEASE_(?<major>\\d+)_(?<minor>\\d+)_(?<patch>\\d+)$",
+      "versionNameTemplate": "RELEASE_{{major}}_{{minor}}_{{patch}}"
     }
   ]
 }
