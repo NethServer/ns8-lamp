@@ -14,7 +14,8 @@
       "mysql_user_db": "database",
       "create_mysql_user": true,
       "php_upload_max_filesize": "100M",
-      "phpmyadmin_enabled": true
+      "phpmyadmin_enabled": true,
+      "php_version": "8.3"
     }
   ],
   "type": "object",
@@ -28,7 +29,8 @@
     "mysql_user_db",
     "create_mysql_user",
     "php_upload_max_filesize",
-    "phpmyadmin_enabled"
+    "phpmyadmin_enabled",
+    "php_version"
   ],
   "properties": {
     "host": {
@@ -79,6 +81,11 @@
       "type": "boolean",
       "title": "Enable phpMyAdmin",
       "description": "Enable phpMyAdmin"
+    },
+    "php_version": {
+      "type": "string",
+      "title": "PHP Version",
+      "description": "Version of PHP to use"
     }
   }
 }
