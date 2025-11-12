@@ -1,17 +1,15 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "local>NethServer/.github:ns8"
-    ],
-    "regexManagers": [
-        {
-            "fileMatch": ["^container/Containerfile$"],
-            "matchStrings": [
-                "ENV PHPMYADMIN_VERSION=(?<currentValue>[^\\s]+)"
-            ],
-            "datasourceTemplate": "github-releases",
-            "depNameTemplate": "phpmyadmin/phpmyadmin",
-            "versioningTemplate": "semver"
-        }
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["local>NethServer/.github:ns8"],
+  "regexManagers": [
+    {
+      "fileMatch": ["^container/Containerfile$"],
+      "matchStrings": [
+        "ENV\\s+PHPMYADMIN_VERSION=(?<currentValue>[0-9a-zA-Z\\.-]+)"
+      ],
+      "depNameTemplate": "phpmyadmin/phpmyadmin",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    }
+  ]
 }
