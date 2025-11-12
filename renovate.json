@@ -8,8 +8,8 @@
         "ENV\\s+PHPMYADMIN_VERSION=(?<currentValue>[0-9a-zA-Z\\.-]+)"
       ],
       "depNameTemplate": "phpmyadmin/phpmyadmin",
-      "datasourceTemplate": "github-releases",
-      "versioningTemplate": "semver"
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "loose"
     }
   ]
 }
