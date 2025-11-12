@@ -1,15 +1,13 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["local>NethServer/.github:ns8"],
   "regexManagers": [
     {
       "fileMatch": ["^container/Containerfile$"],
       "matchStrings": [
-        "ENV\\s+PHPMYADMIN_VERSION=(?<currentValue>[0-9a-zA-Z\\.-]+)"
+        "ENV\\s+PHPMYADMIN_VERSION=(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+)"
       ],
       "depNameTemplate": "phpmyadmin/phpmyadmin",
       "datasourceTemplate": "github-tags",
-      "versioningTemplate": "loose"
+      "versioningTemplate": "regex:^RELEASE_(?<major>\\d+)_(?<minor>\\d+)_(?<patch>\\d+)$"
     }
   ]
 }
