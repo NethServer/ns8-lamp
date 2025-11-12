@@ -21,6 +21,7 @@ TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/apache2-app.pid %t/apache2-app.ctr-id
 ExecStartPre=-runagent discover-smarthost
 ExecStartPre=-runagent discover-ldap
+ExecStartPre=runagent download-php
 ExecStartPre=/bin/mkdir -vp initdb.d crontabs
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --cidfile %t/apache2-app.ctr-id --cgroups=no-conmon \
