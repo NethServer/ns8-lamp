@@ -34,6 +34,6 @@ config["create_mysql_user"] = os.getenv("CREATE_MYSQL_USER","False") == "True"
 config["php_upload_max_filesize"] = os.getenv("PHP_UPLOAD_MAX_FILESIZE","100").removesuffix('M')
 config['php_memory_limit'] = os.getenv("PHP_MEMORY_LIMIT","512").removesuffix('M')
 config["phpmyadmin_enabled"] = os.getenv("PHPMYADMIN_ENABLED","True") == "True"
-
+config["php_version"] = os.getenv("PHP_VERSION","8.3")
 # Dump the configuration to stdout
 json.dump(config, fp=sys.stdout)
