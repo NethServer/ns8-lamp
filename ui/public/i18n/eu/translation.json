@@ -69,7 +69,9 @@
     "php_memory_limit": "PHP memoria-muga",
     "php_memory_limit_helper": "Balio hau MB-n dago",
     "php_memory_limit_placeholder": "Sartu PHP memoria-muga",
-    "php_memory_limit_tooltip": "Script batek kontsumitu dezakeen memoria kopuru maximoa"
+    "php_memory_limit_tooltip": "Script batek kontsumitu dezakeen memoria kopuru maximoa",
+    "select_php_version": "Hautatu PHP bertsioa",
+    "container_version_will_be_installed": "Instalatu egingo da ontzi bertsioa"
   },
   "about": {
     "title": "Deskribapena"
