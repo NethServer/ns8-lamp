@@ -56,6 +56,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=traefik@node:routeadm cluster:accountconsumer" \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
+    --label="org.nethserver.images=" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
