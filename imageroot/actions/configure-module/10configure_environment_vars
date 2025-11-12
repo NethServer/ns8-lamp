@@ -29,6 +29,4 @@ agent.set_env("PHPMYADMIN_ENABLED", data.get("phpmyadmin_enabled",True))
 # Bind the new domain, overriding previous values (unbind)
 agent.bind_user_domains([os.environ.get('LAMP_LDAP_DOMAIN','')])
 
-# if PHP_VERSION is not set, set it 
-if "PHP_VERSION" not in os.environ:
-    agent.set_env("PHP_VERSION", data.get("php_version",'8.3'))
+agent.set_env("PHP_VERSION", data.get("php_version",'8.3'))
