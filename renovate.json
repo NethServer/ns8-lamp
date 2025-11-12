@@ -2,5 +2,14 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "local>NethServer/.github:ns8"
+    ],
+    "regexManagers": [
+        {
+            "fileMatch": ["^container/Containerfile$"],
+            "matchStrings": ["ENV PHPMYADMIN_VERSION=(?<currentValue>.*)"],
+            "datasourceTemplate": "github-releases",
+            "depNameTemplate": "phpmyadmin/phpmyadmin",
+            "extractVersionTemplate": "^(?<version>.*)$"
+        }
     ]
 }
