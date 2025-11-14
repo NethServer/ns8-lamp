@@ -21,8 +21,6 @@
   "type": "object",
   "required": [
     "host",
-    "http2https",
-    "lets_encrypt",
     "mysql_user_name",
     "mysql_user_pass",
     "mysql_admin_pass",
