@@ -43,6 +43,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --env PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT} \
     --env PHPMYADMIN_ENABLED=${PHPMYADMIN_ENABLED} \
     ${IMAGE_URL_TAG}
+ExecStartPost=/bin/bash -c 'for i in {1..60}; do echo "Verify apache is up $i/20"; /usr/bin/podman exec apache2-app pgrep apache2 && exit 0; sleep 1; done; echo "Apache did not start" >&2; exit 1'
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/apache2-app.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP apache2-app
 SyslogIdentifier=%u

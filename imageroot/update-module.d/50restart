@@ -18,4 +18,4 @@ if [ -f ../systemd/user/lamp-app.service ]; then
     rm ../systemd/user/lamp-app.service
 fi
 # Restart service
-systemctl --user try-restart lamp.service
+systemctl --user try-restart lamp.service apache2-app.service
