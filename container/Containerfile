@@ -1,4 +1,4 @@
-FROM docker.io/ubuntu:noble-20251001
+FROM docker.io/ubuntu:noble-20251013
 MAINTAINER stephane de Labrusse <stephdl@de-labrusse.fr>
 ENV REFRESHED_AT 2024-08-25
 
