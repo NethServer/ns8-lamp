@@ -17,7 +17,7 @@ reponame="lamp"
 
 
 # Define PHP versions to build
-PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4" "8.5")
+PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
 
 # Build images for each PHP version
 for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
