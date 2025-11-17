@@ -5,6 +5,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+set -e
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
 # We want to remove images that are not used by any containers.
 # We use `podman rmi` to remove images, ignoring errors if they are in use.
 
