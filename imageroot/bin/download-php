@@ -5,17 +5,22 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 set -e
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
+# Start the timer
+start_time=$(date +%s)
 # we download image and tag it with major version
-
 minor_version="${PHP_VERSION:-8.3}"
-
 # retrieve environment IMAGE_URL, remove the registry if present and keep the tag, e.g. `1.1.1`
 image_url="${IMAGE_URL:-? We expect IMAGE_URL environment variable}"
 # remove `ghcr.io/nethserver/webserver:`
 tag="${image_url##*:}"
-
 # save the php tag for later use in the systemd service
 echo "IMAGE_URL_TAG=ghcr.io/stephdl/lamp-server-php$minor_version:$tag" > image_url_tag.env
-
 # pull the image
 podman-pull-missing "ghcr.io/stephdl/lamp-server-php$minor_version:$tag"
+# Stop the timer
+end_time=$(date +%s)
+elapsed=$((end_time - start_time))
+echo "Downloaded ghcr.io/stephdl/lamp-server-php$minor_version:$tag in $elapsed seconds."
