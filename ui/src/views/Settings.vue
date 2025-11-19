@@ -341,7 +341,7 @@ export default {
       host: "",
       isLetsEncryptEnabled: false,
       isLetsEncryptCurrentlyEnabled: false,
-      isHttpToHttpsEnabled: true,
+      isHttpToHttpsEnabled: false,
       phpmyadmin_enabled: true,
       create_mysql_user: false,
       php_upload_max_filesize: "100",
@@ -588,8 +588,8 @@ export default {
       }
     },
     async configureModule() {
-      this.error.test_imap = false;
-      this.error.test_smtp = false;
+      this.error.configureModule = "";
+      this.validationErrorDetails = [];
       const isValidationOk = this.validateConfigureModule();
       if (!isValidationOk) {
         return;
