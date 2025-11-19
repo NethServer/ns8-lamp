@@ -14,6 +14,7 @@ EnvironmentFile=%S/state/environment
 EnvironmentFile=%S/state/password.env
 EnvironmentFile=-%S/state/smarthost.env
 EnvironmentFile=-%S/state/discovery.env
+EnvironmentFile=%S/state/image_url_tag.env
 WorkingDirectory=%S/state
 Restart=always
 TimeoutStopSec=70
@@ -41,7 +42,8 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --env PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE} \
     --env PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT} \
     --env PHPMYADMIN_ENABLED=${PHPMYADMIN_ENABLED} \
-    ${LAMP_SERVER_IMAGE}
+    ${IMAGE_URL_TAG}
+ExecStartPost=runagent wait-after-apache
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/apache2-app.ctr-id -t 10
 ExecReload=/usr/bin/podman kill -s HUP apache2-app
 SyslogIdentifier=%u

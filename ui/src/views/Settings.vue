@@ -172,6 +172,29 @@
                       }}</template>
                     </NsTextInput>
                   </template>
+                  <cv-dropdown
+                    :light="true"
+                    :value="PhpVersion"
+                    v-model="PhpVersion"
+                    :up="false"
+                    :inline="false"
+                    :helper-text="
+                      $t('settings.container_version_will_be_installed')
+                    "
+                    :hide-selected="false"
+                    :invalid-message="$t(error.PhpVersion)"
+                    :label="$t('settings.select_php_version')"
+                    :disabled="
+                      loading.getConfiguration || loading.configureModule
+                    "
+                  >
+                    <cv-dropdown-item value="7.4">PHP 7.4</cv-dropdown-item>
+                    <cv-dropdown-item value="8.0">PHP 8.0</cv-dropdown-item>
+                    <cv-dropdown-item value="8.1">PHP 8.1</cv-dropdown-item>
+                    <cv-dropdown-item value="8.2">PHP 8.2</cv-dropdown-item>
+                    <cv-dropdown-item value="8.3">PHP 8.3</cv-dropdown-item>
+                    <cv-dropdown-item value="8.4">PHP 8.4</cv-dropdown-item>
+                  </cv-dropdown>
                   <NsTextInput
                     :label="$t('settings.php_upload_max_filesize')"
                     v-model="php_upload_max_filesize"
@@ -198,9 +221,7 @@
                     type="number"
                     :min="512"
                     :max="4096"
-                    :placeholder="
-                      $t('settings.php_memory_limit_placeholder')
-                    "
+                    :placeholder="$t('settings.php_memory_limit_placeholder')"
                     :disabled="
                       loading.getConfiguration || loading.configureModule
                     "
@@ -280,11 +301,13 @@ export default {
       mysql_user_pass: "",
       mysql_admin_pass: "",
       firstConfig: true,
+      PhpVersion: "8.3",
       loading: {
         getConfiguration: false,
         configureModule: false,
       },
       error: {
+        phpVersion: "",
         getConfiguration: "",
         configureModule: "",
         host: "",
@@ -373,6 +396,7 @@ export default {
       this.php_upload_max_filesize = config.php_upload_max_filesize;
       this.php_memory_limit = config.php_memory_limit;
       this.phpmyadmin_enabled = config.phpmyadmin_enabled;
+      this.PhpVersion = config.php_version;
       this.focusElement("host");
     },
     validateConfigureModule() {
@@ -496,6 +520,7 @@ export default {
             php_upload_max_filesize: this.php_upload_max_filesize,
             php_memory_limit: this.php_memory_limit,
             phpmyadmin_enabled: this.phpmyadmin_enabled,
+            php_version: this.PhpVersion,
           },
           extra: {
             title: this.$t("settings.instance_configuration", {

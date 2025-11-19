@@ -1,0 +1,28 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2025 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+set -e
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
+# we set the PHP_VERSION variable in the environment file if not already set
+# This is used to select the correct image to use
+if [ -z "${PHP_VERSION}" ] || ! grep -q '^PHP_VERSION=' environment; then
+    PHP_VERSION="${PHP_VERSION:-8.3}"
+    echo "PHP_VERSION=$PHP_VERSION" >> environment
+    # for migration when we did not have PHP_VERSION set, we remove the old images with static PHP version
+    for img_id in $(podman images --quiet --filter=reference='ghcr.io/stephdl/lamp-server:*'); do
+        # try to remove the image, print message if successful, ignore errors if it's in use
+        if podman rmi "$img_id" 2>/dev/null; then
+            echo "Removed image: $img_id"
+        fi
+    done
+else
+    # we have migrated clean old images with PHP_VERSION set
+    echo "PHP_VERSION is already set in environment file, skipping."
+    echo "Cleaning old images..."
+    ../bin/clean-images
+fi

@@ -14,4 +14,4 @@ exec 1>&2
 touch smarthost.env
 
 systemctl --user enable lamp.service
-systemctl --user restart lamp.service
+systemctl --user restart lamp.service apache2-app.service

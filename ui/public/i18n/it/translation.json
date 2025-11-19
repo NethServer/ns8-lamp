@@ -69,7 +69,9 @@
     "php_memory_limit": "Limite di memoria PHP",
     "php_memory_limit_helper": "Questo valore è in MB",
     "php_memory_limit_placeholder": "Inserisci il limite di memoria PHP",
-    "php_memory_limit_tooltip": "La quantità massima di memoria che uno script può consumare"
+    "php_memory_limit_tooltip": "La quantità massima di memoria che uno script può consumare",
+    "select_php_version": "Seleziona la versione PHP",
+    "container_version_will_be_installed": "La versione del container verrà installata"
   },
   "about": {
     "title": "Informazioni"

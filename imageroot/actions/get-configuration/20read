@@ -19,8 +19,8 @@ config = {}
 
 # Read current configuration from the environment file
 config["host"] = os.getenv("TRAEFIK_HOST","")
-config["http2https"] = os.getenv("TRAEFIK_HTTP2HTTPS") == "True"
-config["lets_encrypt"] = os.getenv("TRAEFIK_LETS_ENCRYPT") == "True"
+config["http2https"] = os.getenv("TRAEFIK_HTTP2HTTPS", "False") == "True"
+config["lets_encrypt"] = os.getenv("TRAEFIK_LETS_ENCRYPT", "False") == "True"
 config["mysql_user_name"] = os.getenv("MYSQL_USER_NAME","")
 config["mysql_user_db"] = os.getenv("MYSQL_USER_DB","")
 
@@ -34,6 +34,6 @@ config["create_mysql_user"] = os.getenv("CREATE_MYSQL_USER","False") == "True"
 config["php_upload_max_filesize"] = os.getenv("PHP_UPLOAD_MAX_FILESIZE","100").removesuffix('M')
 config['php_memory_limit'] = os.getenv("PHP_MEMORY_LIMIT","512").removesuffix('M')
 config["phpmyadmin_enabled"] = os.getenv("PHPMYADMIN_ENABLED","True") == "True"
-
+config["php_version"] = os.getenv("PHP_VERSION","8.3")
 # Dump the configuration to stdout
 json.dump(config, fp=sys.stdout)
