@@ -15,6 +15,7 @@ renv = request['environment']
 
 configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data={
     "host": renv["TRAEFIK_HOST"],
+    "http2https": renv["TRAEFIK_HTTP2HTTPS"] == "True",
     "mysql_user_name": renv["MYSQL_USER_NAME"],
     "mysql_user_db": renv["MYSQL_USER_DB"],
     "create_mysql_user": renv["CREATE_MYSQL_USER"] == "True",
