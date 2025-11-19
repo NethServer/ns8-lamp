@@ -56,6 +56,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.authorizations=traefik@node:routeadm cluster:accountconsumer" \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
+    --label="org.nethserver.min-core=3.12.4-0" \
     --label="org.nethserver.images=ghcr.io/stephdl/lamp-server-php8.3:${IMAGETAG}" \
     "${container}"
 # Commit the image
