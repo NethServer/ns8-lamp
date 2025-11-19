@@ -29,29 +29,62 @@
               v-model.trim="host"
               class="mg-bottom"
               :invalid-message="$t(error.host)"
-              :disabled="loading.getConfiguration || loading.configureModule"
+              :disabled="stillLoading"
               ref="host"
             >
             </cv-text-input>
-            <cv-toggle
+            <NsToggle
               value="letsEncrypt"
-              :label="$t('settings.lets_encrypt')"
+              :label="core.$t('apps_lets_encrypt.request_https_certificate')"
               v-model="isLetsEncryptEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
+              :disabled="stillLoading"
               class="mg-bottom"
             >
+              <template #tooltip>
+                <div class="mg-bottom-sm">
+                  {{ core.$t("apps_lets_encrypt.lets_encrypt_tips") }}
+                </div>
+                <div class="mg-bottom-sm">
+                  <cv-link @click="goToCertificates">
+                    {{ core.$t("apps_lets_encrypt.go_to_tls_certificates") }}
+                  </cv-link>
+                </div>
+              </template>
               <template slot="text-left">{{
                 $t("settings.disabled")
               }}</template>
               <template slot="text-right">{{
                 $t("settings.enabled")
               }}</template>
-            </cv-toggle>
+            </NsToggle>
+            <cv-row
+              v-if="isLetsEncryptCurrentlyEnabled && !isLetsEncryptEnabled"
+            >
+              <cv-column>
+                <NsInlineNotification
+                  kind="warning"
+                  :title="
+                    core.$t('apps_lets_encrypt.lets_encrypt_disabled_warning')
+                  "
+                  :description="
+                    core.$t(
+                      'apps_lets_encrypt.lets_encrypt_disabled_warning_description',
+                      {
+                        node: this.status.node_ui_name
+                          ? this.status.node_ui_name
+                          : this.status.node,
+                      }
+                    )
+                  "
+                  :showCloseButton="false"
+                />
+              </cv-column>
+            </cv-row>
             <cv-toggle
               value="httpToHttps"
               :label="$t('settings.http_to_https')"
               v-model="isHttpToHttpsEnabled"
-              :disabled="loading.getConfiguration || loading.configureModule"
+              :disabled="stillLoading"
               class="mg-bottom"
             >
               <template slot="text-left">{{
@@ -88,9 +121,7 @@
                     value="phpmyadmin_enabled"
                     :label="$t('settings.phpmyadmin_enabled')"
                     v-model="phpmyadmin_enabled"
-                    :disabled="
-                      loading.getConfiguration || loading.configureModule
-                    "
+                    :disabled="stillLoading"
                     class="mg-bottom"
                   >
                     <template slot="text-left">{{
@@ -184,9 +215,7 @@
                     :hide-selected="false"
                     :invalid-message="$t(error.PhpVersion)"
                     :label="$t('settings.select_php_version')"
-                    :disabled="
-                      loading.getConfiguration || loading.configureModule
-                    "
+                    :disabled="stillLoading"
                   >
                     <cv-dropdown-item value="7.4">PHP 7.4</cv-dropdown-item>
                     <cv-dropdown-item value="8.0">PHP 8.0</cv-dropdown-item>
@@ -204,9 +233,7 @@
                     :placeholder="
                       $t('settings.php_upload_max_filesize_placeholder')
                     "
-                    :disabled="
-                      loading.getConfiguration || loading.configureModule
-                    "
+                    :disabled="stillLoading"
                     :invalid-message="$t(error.php_upload_max_filesize)"
                     ref="php_upload_max_filesize"
                     :helper-text="$t('settings.php_upload_max_filesize_helper')"
@@ -222,9 +249,7 @@
                     :min="512"
                     :max="4096"
                     :placeholder="$t('settings.php_memory_limit_placeholder')"
-                    :disabled="
-                      loading.getConfiguration || loading.configureModule
-                    "
+                    :disabled="stillLoading"
                     :invalid-message="$t(error.php_memory_limit)"
                     ref="php_memory_limit"
                     :helper-text="$t('settings.php_memory_limit_helper')"
@@ -246,11 +271,33 @@
                 />
               </cv-column>
             </cv-row>
+            <cv-row v-if="validationErrorDetails.length">
+              <cv-column>
+                <NsInlineNotification
+                  kind="error"
+                  :title="
+                    core.$t('apps_lets_encrypt.cannot_obtain_certificate')
+                  "
+                  :showCloseButton="false"
+                >
+                  <template #description>
+                    <div class="flex flex-col gap-2">
+                      <div
+                        v-for="(detail, index) in validationErrorDetails"
+                        :key="index"
+                      >
+                        {{ detail }}
+                      </div>
+                    </div>
+                  </template>
+                </NsInlineNotification>
+              </cv-column>
+            </cv-row>
             <NsButton
               kind="primary"
               :icon="Save20"
               :loading="loading.configureModule"
-              :disabled="loading.getConfiguration || loading.configureModule"
+              :disabled="stillLoading"
               >{{ $t("settings.save") }}</NsButton
             >
           </cv-form>
@@ -288,9 +335,12 @@ export default {
       q: {
         page: "settings",
       },
+      status: {},
+      validationErrorDetails: [],
       urlCheckInterval: null,
       host: "",
       isLetsEncryptEnabled: false,
+      isLetsEncryptCurrentlyEnabled: false,
       isHttpToHttpsEnabled: true,
       phpmyadmin_enabled: true,
       create_mysql_user: false,
@@ -305,6 +355,7 @@ export default {
       loading: {
         getConfiguration: false,
         configureModule: false,
+        getStatus: false,
       },
       error: {
         phpVersion: "",
@@ -319,14 +370,23 @@ export default {
         mysql_admin_pass: "",
         php_upload_max_filesize: "",
         php_memory_limit: "",
+        getStatus: false,
       },
     };
   },
   computed: {
     ...mapState(["instanceName", "core", "appName"]),
+    stillLoading() {
+      return (
+        this.loading.getConfiguration ||
+        this.loading.configureModule ||
+        this.loading.getStatus
+      );
+    },
   },
   created() {
     this.getConfiguration();
+    this.getStatus();
   },
   beforeRouteEnter(to, from, next) {
     next((vm) => {
@@ -339,6 +399,51 @@ export default {
     next();
   },
   methods: {
+    goToCertificates() {
+      this.core.$router.push("/settings/tls-certificates");
+    },
+    async getStatus() {
+      this.loading.getStatus = true;
+      this.error.getStatus = "";
+      const taskAction = "get-status";
+      const eventId = this.getUuid();
+      // register to task error
+      this.core.$root.$once(
+        `${taskAction}-aborted-${eventId}`,
+        this.getStatusAborted
+      );
+      // register to task completion
+      this.core.$root.$once(
+        `${taskAction}-completed-${eventId}`,
+        this.getStatusCompleted
+      );
+      const res = await to(
+        this.createModuleTaskForApp(this.instanceName, {
+          action: taskAction,
+          extra: {
+            title: this.$t("action." + taskAction),
+            isNotificationHidden: true,
+            eventId,
+          },
+        })
+      );
+      const err = res[0];
+      if (err) {
+        console.error(`error creating task ${taskAction}`, err);
+        this.error.getStatus = this.getErrorMessage(err);
+        this.loading.getStatus = false;
+        return;
+      }
+    },
+    getStatusAborted(taskResult, taskContext) {
+      console.error(`${taskContext.action} aborted`, taskResult);
+      this.error.getStatus = this.$t("error.generic_error");
+      this.loading.getStatus = false;
+    },
+    getStatusCompleted(taskContext, taskResult) {
+      this.status = taskResult.output;
+      this.loading.getStatus = false;
+    },
     async getConfiguration() {
       this.loading.getConfiguration = true;
       this.error.getConfiguration = "";
@@ -385,6 +490,7 @@ export default {
       const config = taskResult.output;
       this.host = config.host;
       this.isLetsEncryptEnabled = config.lets_encrypt;
+      this.isLetsEncryptCurrentlyEnabled = config.lets_encrypt;
       this.isHttpToHttpsEnabled = config.http2https;
       this.mysql_user_name = config.mysql_user_name;
       this.mysql_user_db = config.mysql_user_db;
@@ -464,15 +570,20 @@ export default {
     configureModuleValidationFailed(validationErrors) {
       this.loading.configureModule = false;
       let focusAlreadySet = false;
-
       for (const validationError of validationErrors) {
         const param = validationError.parameter;
-        // set i18n error message
-        this.error[param] = this.$t("settings." + validationError.error);
-
-        if (!focusAlreadySet) {
-          this.focusElement(param);
-          focusAlreadySet = true;
+        if (validationError.details) {
+          // show inline error notification with details
+          this.validationErrorDetails = validationError.details
+            .split("\n")
+            .filter((detail) => detail.trim() !== "");
+        } else {
+          // set i18n error message
+          this.error[param] = this.$t("settings." + validationError.error);
+          if (!focusAlreadySet) {
+            this.focusElement(param);
+            focusAlreadySet = true;
+          }
         }
       }
     },
