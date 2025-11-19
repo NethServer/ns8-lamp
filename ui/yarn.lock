@@ -8846,6 +8846,11 @@ vue-date-fns@^2.0.1:
   dependencies:
     date-fns "^2.0.0"
 
+vue-debounce@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.npmmirror.com/vue-debounce/-/vue-debounce-4.0.0.tgz#3f584dabc08a841a0182ab68d19f77f70a416fcc"
+  integrity sha512-+BrcKfLpyDpUJ58ZrAvI35irRCgYHFpnF3NJZwwaz8/kkKmEq6TWPXBIhLh2HQAsUZNwo52K/vQyiEFsJ/1RYA==
+
 vue-eslint-parser@^7.0.0:
   version "7.8.0"
   resolved "https://registry.npmmirror.com/vue-eslint-parser/download/vue-eslint-parser-7.8.0.tgz#43850bf856c9a69d62c0e12769609c338423684b"
