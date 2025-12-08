@@ -871,6 +871,11 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.21.0":
+  version "7.28.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.4.tgz#a70226016fabe25c5783b2f22d3e1c9bc5ca3326"
+  integrity sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==
+
 "@babel/template@^7.0.0", "@babel/template@^7.14.5":
   version "7.14.5"
   resolved "https://registry.npmmirror.com/@babel/template/download/@babel/template-7.14.5.tgz?cache=0&sync_timestamp=1623280496540&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40babel%2Ftemplate%2Fdownload%2F%40babel%2Ftemplate-7.14.5.tgz#a9bc9d8b33354ff6e55a9c60d1109200a68974f4"
@@ -1013,9 +1018,9 @@
     glob-to-regexp "^0.3.0"
 
 "@nethserver/ns8-ui-lib@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.npmmirror.com/@nethserver/ns8-ui-lib/-/ns8-ui-lib-1.6.0.tgz#0cd1f3b66faad867a43f50a457e32d0f3622198f"
-  integrity sha512-ZGj/lB6Z/isy90DG0EJfwCr9oVySlbbcWvX3TZfJk9vcvRhNLF6M22ywjtKKfyagJNdqaw4Mrnpecv2GsxUV5Q==
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@nethserver/ns8-ui-lib/-/ns8-ui-lib-1.7.0.tgz#a7fccab4f9996ea5c73a213c72db1c82718f2fc4"
+  integrity sha512-epBeALnftM9IALFH5f6Fbkm+94eN8g/v7uazPP63t3aUmrUm8npxx7gfcjMX89HZ98ZEY6HKfFgb22dv3aqKdg==
   dependencies:
     "@rollup/plugin-json" "^4.1.0"
     core-js "^3.15.2"
@@ -3250,9 +3255,9 @@ dashdash@^1.12.0:
     assert-plus "^1.0.0"
 
 date-fns-tz@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-1.1.6.tgz#93cbf354e2aeb2cd312ffa32e462c1943cf20a8e"
-  integrity sha512-nyy+URfFI3KUY7udEJozcoftju+KduaqkVfwyTIE0traBiVye09QnyWKLZK7drRr5h9B7sPJITmQnS3U6YOdQg==
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/date-fns-tz/-/date-fns-tz-1.3.8.tgz#083e3a4e1f19b7857fa0c18deea6c2bc46ded7b9"
+  integrity sha512-qwNXUFtMHTTU6CFSFjoJ80W8Fzzp24LntbjFFBgL/faqds4e5mo9mftoRLgr3Vi1trISsg4awSpYVsOQCRnapQ==
 
 date-fns@^2.0.0:
   version "2.28.0"
@@ -3260,9 +3265,11 @@ date-fns@^2.0.0:
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
 
 date-fns@^2.23.0:
-  version "2.23.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.23.0.tgz#4e886c941659af0cf7b30fafdd1eaa37e88788a9"
-  integrity sha512-5ycpauovVyAk0kXNZz6ZoB9AYMZB4DObse7P3BPWmyEjXNORTI8EJ6X0uaSAq4sCHzM1uajzrkr6HnsLQpxGXA==
+  version "2.30.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
+  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
+  dependencies:
+    "@babel/runtime" "^7.21.0"
 
 de-indent@^1.0.2:
   version "1.0.2"
