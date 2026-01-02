@@ -17,7 +17,8 @@ reponame="lamp"
 
 
 # Define PHP versions to build
-PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
+PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4" "8.5")
+PHPMYADMIN_VERSION="5.2.3"
 
 # Build images for each PHP version
 for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
@@ -27,6 +28,7 @@ for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
         --layers \
         --tag "${repobase}/lamp-server-php${PHP_VERSION}" \
         --build-arg "PHP_VERSION=${PHP_VERSION}" \
+        --build-arg "PHPMYADMIN_VERSION=${PHPMYADMIN_VERSION}" \
         container
 
     images+=("${repobase}/lamp-server-php${PHP_VERSION}")

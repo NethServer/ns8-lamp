@@ -223,6 +223,7 @@
                     <cv-dropdown-item value="8.2">PHP 8.2</cv-dropdown-item>
                     <cv-dropdown-item value="8.3">PHP 8.3</cv-dropdown-item>
                     <cv-dropdown-item value="8.4">PHP 8.4</cv-dropdown-item>
+                    <cv-dropdown-item value="8.5">PHP 8.5</cv-dropdown-item>
                   </cv-dropdown>
                   <NsTextInput
                     :label="$t('settings.php_upload_max_filesize')"
