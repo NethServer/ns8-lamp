@@ -40,6 +40,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
   apt-get update && \
   apt-get -y upgrade && \
+  OPCACHE_PKG=$(if [ "${PHP_VERSION}" != "8.5" ]; then echo "php${PHP_VERSION}-opcache"; fi) && \
   apt-get -y install supervisor \
       vim \
       nano \
@@ -78,7 +79,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
       php${PHP_VERSION}-curl \
       php${PHP_VERSION}-cli \
       php${PHP_VERSION}-common \
-      php${PHP_VERSION}-opcache \
+      ${OPCACHE_PKG} \
       php${PHP_VERSION}-readline \
       zip \
       unzip \
