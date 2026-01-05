@@ -15,7 +15,9 @@
       "create_mysql_user": true,
       "php_upload_max_filesize": "100M",
       "phpmyadmin_enabled": true,
-      "php_version": "8.3"
+      "php_version": "8.3",
+      "php_max_execution_time": "600",
+      "php_memory_limit": "512M"
     }
   ],
   "type": "object",
@@ -28,7 +30,9 @@
     "create_mysql_user",
     "php_upload_max_filesize",
     "phpmyadmin_enabled",
-    "php_version"
+    "php_version",
+    "php_max_execution_time",
+    "php_memory_limit"
   ],
   "properties": {
     "host": {
@@ -91,6 +95,11 @@
       "type": "string",
       "title": "PHP Version",
       "description": "Version of PHP to use"
+    },
+    "php_max_execution_time": {
+      "type": "string",
+      "title": "PHP max execution time",
+      "description": "Maximum execution time of each script, in seconds"
     }
   }
 }

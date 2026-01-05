@@ -53,6 +53,7 @@
     "php_upload_max_filesize_placeholder": "أدخل الحد الأقصى لحجم تحميل ملف PHP",
     "php_upload_max_filesize_tooltip": "أقصى حجم للملف الذي يمكن تحميله إلى الخادم",
     "php_upload_max_filesize_helper": "هذه القيمة بالميغابايت",
+    "php_upload_max_filesize_must_be_less_than_memory_limit": "يجب أن يكون حد أقصى لحجم التحميل أقل من حد الذاكرة",
     "mysql_user_name": "اسم مستخدم MySQL",
     "mysql_user_name_placeholder": "أدخل اسم مستخدم MySQL",
     "mysql_user_name_tooltip": "اسم مستخدم MySQL الذي سيتم إنشاؤه",
@@ -71,7 +72,11 @@
     "php_memory_limit_placeholder": "أدخل حد الذاكرة PHP",
     "php_memory_limit_tooltip": "الحد الأقصى للذاكرة التي يمكن أن يستهلكها البرنامج النصي",
     "select_php_version": "اختر إصدار PHP",
-    "container_version_will_be_installed": "سيتم تثبيت إصدار الحاوية"
+    "container_version_will_be_installed": "سيتم تثبيت إصدار الحاوية",
+    "select_php_max_execution_time_limit": "حد الوقت الأقصى لتنفيذ PHP",
+    "Min": "الحد الأدنى",
+    "Max": "الحد الأقصى",
+    "php_max_execution_time_helper": "أدخل 0 لعدم تعيين حد زمني، وإلا أدخل الحد الأقصى لوقت التنفيذ بالثواني"
   },
   "about": {
     "title": "حول"

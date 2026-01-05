@@ -17,6 +17,8 @@ configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='conf
     "mysql_admin_pass": agent.read_envfile("password.env")["MYSQL_ADMIN_PASS"],
     "mysql_user_pass": agent.read_envfile("password.env")["MYSQL_USER_PASS"],
     "php_upload_max_filesize": os.environ["PHP_UPLOAD_MAX_FILESIZE"].removesuffix('M'),
+    "php_memory_limit": os.environ["PHP_MEMORY_LIMIT"].removesuffix('M'),
+    "php_max_execution_time": os.environ["PHP_MAX_EXECUTION_TIME"],
     "phpmyadmin_enabled": os.environ["PHPMYADMIN_ENABLED"] == "True",
     "php_version": os.environ["PHP_VERSION"],
 })

@@ -259,6 +259,35 @@
                       $t("settings.php_memory_limit_tooltip")
                     }}</template>
                   </NsTextInput>
+                  <label class="bx--label">
+                    {{ $t('settings.select_php_max_execution_time_limit') }}
+                    <cv-interactive-tooltip
+                      alignment="center"
+                      direction="top"
+                      class="info"
+                    >
+                      <template slot="content">
+                        <div>
+                          {{ $t("settings.php_max_execution_time_helper") }}
+                        </div>
+                      </template>
+                    </cv-interactive-tooltip>
+                  </label>
+                  <cv-slider
+                    :light="true"
+                    :disabled="
+                      loading.getConfiguration || loading.configureModule
+                    "
+                    :min="'0'"
+                    :max="'3600'"
+                    :value="MaxExecutionTime"
+                    v-model="MaxExecutionTime"
+                    :step="'1'"
+                    :step-multiplier="'1'"
+                    :min-label="$t('settings.Min')"
+                    :max-label="$t('settings.Max')"
+                  >
+                  </cv-slider>
                 </template>
               </cv-accordion-item>
             </cv-accordion>
@@ -347,6 +376,7 @@ export default {
       create_mysql_user: false,
       php_upload_max_filesize: "100",
       php_memory_limit: "512",
+      MaxExecutionTime: "600",
       mysql_user_name: "",
       mysql_user_db: "",
       mysql_user_pass: "",
@@ -372,6 +402,7 @@ export default {
         php_upload_max_filesize: "",
         php_memory_limit: "",
         getStatus: false,
+        MaxExecutionTime: "",
       },
     };
   },
@@ -504,6 +535,7 @@ export default {
       this.php_memory_limit = config.php_memory_limit;
       this.phpmyadmin_enabled = config.phpmyadmin_enabled;
       this.PhpVersion = config.php_version;
+      this.MaxExecutionTime = config.php_max_execution_time.toString();
       this.focusElement("host");
     },
     validateConfigureModule() {
@@ -563,6 +595,14 @@ export default {
 
         if (isValidationOk) {
           this.focusElement("mysql_user_db");
+        }
+        isValidationOk = false;
+      }
+      if (parseInt(this.php_upload_max_filesize) > parseInt(this.php_memory_limit)) {
+        this.error.php_upload_max_filesize = "settings.php_upload_max_filesize_must_be_less_than_memory_limit";
+
+        if (isValidationOk) {
+          this.focusElement("php_upload_max_filesize");
         }
         isValidationOk = false;
       }
@@ -633,6 +673,7 @@ export default {
             php_memory_limit: this.php_memory_limit,
             phpmyadmin_enabled: this.phpmyadmin_enabled,
             php_version: this.PhpVersion,
+            php_max_execution_time: this.MaxExecutionTime.toString(),
           },
           extra: {
             title: this.$t("settings.instance_configuration", {

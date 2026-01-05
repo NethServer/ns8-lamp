@@ -24,6 +24,7 @@ agent.set_env("CREATE_MYSQL_USER", data.get("create_mysql_user",False))
 agent.set_env("PHP_UPLOAD_MAX_FILESIZE", data.get("php_upload_max_filesize",'100') + 'M')
 agent.set_env("PHP_POST_MAX_SIZE", data.get("php_upload_max_filesize",'100') + 'M')
 agent.set_env("PHP_MEMORY_LIMIT", data.get("php_memory_limit",'512') + 'M')
+agent.set_env("PHP_MAX_EXECUTION_TIME", data.get("php_max_execution_time",'600'))
 agent.set_env("PHPMYADMIN_ENABLED", data.get("phpmyadmin_enabled",True))
 
 # Bind the new domain, overriding previous values (unbind)

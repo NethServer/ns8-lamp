@@ -53,6 +53,7 @@
     "php_upload_max_filesize_placeholder": "Sartu PHP igoerako fitxategiaren tamaina maximoa",
     "php_upload_max_filesize_tooltip": "Zerberrera igo daitekeen fitxategien tamaina maximoa",
     "php_upload_max_filesize_helper": "Balio hau MB-n dago",
+    "php_upload_max_filesize_must_be_less_than_memory_limit": "Igoerako fitxategiaren tamaina maximoa memoriak duen limitea baino txikiagoa izan behar da",
     "mysql_user_name": "MySQL erabiltzaile izena",
     "mysql_user_name_placeholder": "Sartu MySQL erabiltzaile izena",
     "mysql_user_name_tooltip": "Sortu behar den MySQL erabiltzailearen izena",
@@ -71,7 +72,11 @@
     "php_memory_limit_placeholder": "Sartu PHP memoria-muga",
     "php_memory_limit_tooltip": "Script batek kontsumitu dezakeen memoria kopuru maximoa",
     "select_php_version": "Hautatu PHP bertsioa",
-    "container_version_will_be_installed": "Instalatu egingo da ontzi bertsioa"
+    "container_version_will_be_installed": "Instalatu egingo da ontzi bertsioa",
+    "select_php_max_execution_time_limit": "PHP exekuzio denbora-muga maximoa",
+    "Min": "Minimoa",
+    "Max": "Maximoa",
+    "php_max_execution_time_helper": "Sartu 0 denbora-mugarik ez ezartzeko, bestela sartu gehienezko exekuzio-denbora segundotan"
   },
   "about": {
     "title": "Deskribapena"

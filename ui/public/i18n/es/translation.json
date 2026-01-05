@@ -53,6 +53,7 @@
     "php_upload_max_filesize_placeholder": "Introduzca el tamaño máximo de carga de archivos PHP",
     "php_upload_max_filesize_tooltip": "Tamaño máximo de los archivos que se pueden cargar en el servidor",
     "php_upload_max_filesize_helper": "Este valor está en MB",
+    "php_upload_max_filesize_must_be_less_than_memory_limit": "El tamaño máximo de carga debe ser menor que el límite de memoria",
     "mysql_user_name": "Nombre de usuario MySQL",
     "mysql_user_name_placeholder": "Introduzca el nombre de usuario MySQL",
     "mysql_user_name_tooltip": "Nombre del usuario MySQL a crear",
@@ -71,7 +72,11 @@
     "php_memory_limit_placeholder": "Introduzca el límite de memoria PHP",
     "php_memory_limit_tooltip": "La cantidad máxima de memoria que un script puede consumir",
     "select_php_version": "Seleccionar versión de PHP",
-    "container_version_will_be_installed": "Se instalará la versión del contenedor"
+    "container_version_will_be_installed": "Se instalará la versión del contenedor",
+    "select_php_max_execution_time_limit": "Límite máximo de tiempo de ejecución de PHP",
+    "Min": "Mínimo",
+    "Max": "Máximo",
+    "php_max_execution_time_helper": "Ingrese 0 para no establecer límite de tiempo, de lo contrario ingrese el tiempo máximo de ejecución en segundos"
   },
   "about": {
     "title": "Acerca de"

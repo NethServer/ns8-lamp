@@ -20,6 +20,8 @@ for evar in [
         "MYSQL_USER_DB",
         "CREATE_MYSQL_USER",
         "PHP_UPLOAD_MAX_FILESIZE",
+        "PHP_MEMORY_LIMIT",
+        "PHP_MAX_EXECUTION_TIME",
         "PHPMYADMIN_ENABLED",
         "PHP_VERSION"
     ]:
