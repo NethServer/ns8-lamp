@@ -53,6 +53,7 @@
     "php_upload_max_filesize_placeholder": "Introduzca el tamaño máximo de carga de archivos PHP",
     "php_upload_max_filesize_tooltip": "Tamaño máximo de los archivos que se pueden cargar en el servidor",
     "php_upload_max_filesize_helper": "Este valor está en MB",
+    "php_upload_max_filesize_must_be_less_than_memory_limit": "El tamaño máximo de carga debe ser menor que el límite de memoria",
     "mysql_user_name": "Nombre de usuario MySQL",
     "mysql_user_name_placeholder": "Introduzca el nombre de usuario MySQL",
     "mysql_user_name_tooltip": "Nombre del usuario MySQL a crear",

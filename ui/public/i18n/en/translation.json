@@ -53,6 +53,7 @@
     "php_upload_max_filesize_placeholder": "Enter PHP upload max filesize",
     "php_upload_max_filesize_tooltip": "Maximum size of files that can be uploaded to the server",
     "php_upload_max_filesize_helper": "This value is in MB",
+    "php_upload_max_filesize_must_be_less_than_memory_limit": "Upload max filesize must be less than memory limit",
     "mysql_user_name": "MySQL user name",
     "mysql_user_name_placeholder": "Enter MySQL user name",
     "mysql_user_name_tooltip": "Name of the MySQL user to create",

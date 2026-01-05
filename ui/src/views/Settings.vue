@@ -598,6 +598,14 @@ export default {
         }
         isValidationOk = false;
       }
+      if (parseInt(this.php_upload_max_filesize) > parseInt(this.php_memory_limit)) {
+        this.error.php_upload_max_filesize = "settings.php_upload_max_filesize_must_be_less_than_memory_limit";
+
+        if (isValidationOk) {
+          this.focusElement("php_upload_max_filesize");
+        }
+        isValidationOk = false;
+      }
       return isValidationOk;
     },
     configureModuleValidationFailed(validationErrors) {

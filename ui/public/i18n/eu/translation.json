@@ -53,6 +53,7 @@
     "php_upload_max_filesize_placeholder": "Sartu PHP igoerako fitxategiaren tamaina maximoa",
     "php_upload_max_filesize_tooltip": "Zerberrera igo daitekeen fitxategien tamaina maximoa",
     "php_upload_max_filesize_helper": "Balio hau MB-n dago",
+    "php_upload_max_filesize_must_be_less_than_memory_limit": "Igoerako fitxategiaren tamaina maximoa memoriak duen limitea baino txikiagoa izan behar da",
     "mysql_user_name": "MySQL erabiltzaile izena",
     "mysql_user_name_placeholder": "Sartu MySQL erabiltzaile izena",
     "mysql_user_name_tooltip": "Sortu behar den MySQL erabiltzailearen izena",
