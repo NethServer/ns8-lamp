@@ -71,7 +71,11 @@
     "php_memory_limit_placeholder": "PHP-Speicherlimit eingeben",
     "php_memory_limit_tooltip": "Maximale Menge an Speicher, die ein Skript verbrauchen darf",
     "select_php_version": "PHP-Version auswählen",
-    "container_version_will_be_installed": "Container-Version wird installiert"
+    "container_version_will_be_installed": "Container-Version wird installiert",
+    "select_php_max_execution_time_limit": "Maximales PHP-Ausführungs-Zeitlimit auswählen",
+    "Min": "Min",
+    "Max": "Max",
+    "php_max_execution_time_helper": "Geben Sie 0 ein, um kein Zeitlimit zu setzen, andernfalls geben Sie die maximale Ausführungszeit in Sekunden ein"
   },
   "about": {
     "title": "Über"

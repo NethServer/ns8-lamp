@@ -71,7 +71,11 @@
     "php_memory_limit_placeholder": "أدخل حد الذاكرة PHP",
     "php_memory_limit_tooltip": "الحد الأقصى للذاكرة التي يمكن أن يستهلكها البرنامج النصي",
     "select_php_version": "اختر إصدار PHP",
-    "container_version_will_be_installed": "سيتم تثبيت إصدار الحاوية"
+    "container_version_will_be_installed": "سيتم تثبيت إصدار الحاوية",
+    "select_php_max_execution_time_limit": "اختر حد الوقت الأقصى لتنفيذ PHP",
+    "Min": "الحد الأدنى",
+    "Max": "الحد الأقصى",
+    "php_max_execution_time_helper": "أدخل 0 لعدم تعيين حد زمني، وإلا أدخل الحد الأقصى لوقت التنفيذ بالثواني"
   },
   "about": {
     "title": "حول"
