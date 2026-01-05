@@ -73,7 +73,7 @@
     "php_memory_limit_tooltip": "La cantidad máxima de memoria que un script puede consumir",
     "select_php_version": "Seleccionar versión de PHP",
     "container_version_will_be_installed": "Se instalará la versión del contenedor",
-    "select_php_max_execution_time_limit": "Seleccionar límite máximo de tiempo de ejecución de PHP",
+    "select_php_max_execution_time_limit": "Límite máximo de tiempo de ejecución de PHP",
     "Min": "Mínimo",
     "Max": "Máximo",
     "php_max_execution_time_helper": "Ingrese 0 para no establecer límite de tiempo, de lo contrario ingrese el tiempo máximo de ejecución en segundos"
