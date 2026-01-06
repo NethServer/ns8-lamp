@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#
+# Copyright (C) 2025 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+set -e
+# Redirect any output to the journal (stderr)
+exec 1>&2
+
+# we set the PHP_MAX_EXECUTION_TIME variable in the environment file if not already set
+if [ -z "${PHP_MAX_EXECUTION_TIME}" ] || ! grep -q '^PHP_MAX_EXECUTION_TIME=' environment; then
+    PHP_MAX_EXECUTION_TIME="${PHP_MAX_EXECUTION_TIME:-600}"
+    echo "PHP_MAX_EXECUTION_TIME=$PHP_MAX_EXECUTION_TIME" >> environment
+else
+    # we have migrated clean old images with PHP_MAX_EXECUTION_TIME set
+    echo "PHP_MAX_EXECUTION_TIME is already set in environment file, skipping."
+fi
