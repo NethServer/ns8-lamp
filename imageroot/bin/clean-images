@@ -12,7 +12,7 @@ exec 1>&2
 # We want to remove images that are not used by any containers.
 # We use `podman rmi` to remove images, ignoring errors if they are in use.
 
-for img_id in $(podman images --quiet --filter=reference='ghcr.io/stephdl/lamp-server*:*'); do
+for img_id in $(podman images --quiet --filter=reference='ghcr.io/nethserver/lamp-server*:*'); do
     # try to remove the image, print message if successful, ignore errors if it's in use
     if podman rmi "$img_id" 2>/dev/null; then
         echo "Removed image: $img_id"

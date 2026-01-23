@@ -10,7 +10,7 @@ exec 1>&2
 
 
 # for migration when we did not have PHP_VERSION set, we remove the old images with static PHP version
-for img_id in $(podman images --quiet --filter=reference='ghcr.io/stephdl/lamp-server:*'); do
+for img_id in $(podman images --quiet --filter=reference='ghcr.io/nethserver/lamp-server:*'); do
     # try to remove the image, print message if successful, ignore errors if it's in use
     if podman rmi "$img_id" 2>/dev/null; then
         echo "Removed image: $img_id"
