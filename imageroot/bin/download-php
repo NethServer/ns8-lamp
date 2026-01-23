@@ -14,7 +14,7 @@ start_time=$(date +%s)
 minor_version="${PHP_VERSION:-8.3}"
 # retrieve environment IMAGE_URL, remove the registry if present and keep the tag, e.g. `1.1.1`
 image_url="${IMAGE_URL:-? We expect IMAGE_URL environment variable}"
-# remove `ghcr.io/nethserver/webserver:`
+# catch the version tag
 tag="${image_url##*:}"
 # save the php tag for later use in the systemd service
 echo "IMAGE_URL_TAG=ghcr.io/nethserver/lamp-server-php$minor_version:$tag" > image_url_tag.env
