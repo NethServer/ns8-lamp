@@ -41,7 +41,7 @@ Check if lamp is installed correctly
     Set Suite Variable    ${module_id}    ${output.module_id}
 
 Check if lamp can be configured
-    ${rc} =    Execute Command    api-cli run module/${module_id}/configure-module --data '{"create_mysql_user": true,"host": "lamp.fqdn.test","http2https": true,"lets_encrypt": false,"mysql_admin_pass": "Nethesis,1234","mysql_user_db": "database","mysql_user_name": "admin","mysql_user_pass": "Nethesis,1234","php_max_execution_time": "3600","php_memory_limit": "2000","php_upload_max_filesize": "2000","php_version": "8.3","phpmyadmin_enabled": true}'
+    ${rc} =    Execute Command    api-cli run module/${module_id}/configure-module --data '{"create_mysql_user": true,"host": "lamp.fqdn.test","http2https": true,"lets_encrypt": false,"mysql_admin_pass": "Nethesis,1234","mysql_user_db": "database","mysql_user_name": "admin","mysql_user_pass": "Nethesis,1234","php_max_execution_time": "3600","php_memory_limit": "2000","php_upload_max_filesize": "2000","php_version": "7.4","phpmyadmin_enabled": true}'
     ...    return_rc=True  return_stdout=False
     Should Be Equal As Integers    ${rc}  0
 
