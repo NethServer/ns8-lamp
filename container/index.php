@@ -81,11 +81,11 @@ $osInfo = getOSInformation();
 <body>
     <div class="container">
         <header>
-            <h2>Welcome to <a href="https://github.com/stephdl/ns8-lamp" target="_blank">ns8-Lamp</a> a.k.a
+            <h2>Welcome to <a href="https://github.com/nethserver/ns8-lamp" target="_blank">ns8-Lamp</a> a.k.a
                 stephdl/ns8-lamp</h2>
         </header>
         <article>
-            <p>For documentation, <a href="https://github.com/stephdl/ns8-lamp" target="_blank">click here</a>.</p>
+            <p>For documentation, <a href="https://github.com/nethserver/ns8-lamp" target="_blank">click here</a>.</p>
             <p>For PHP information, <a href="phpinfo.php" target="_blank">click here</a>.</p>
 
             <div class="warning">
