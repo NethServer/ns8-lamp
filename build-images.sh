@@ -11,7 +11,7 @@ set -e
 # Prepare variables for later use
 images=()
 # The image will be pushed to GitHub container registry
-repobase="${REPOBASE:-ghcr.io/stephdl}"
+repobase="${REPOBASE:-ghcr.io/nethserver}"
 # Configure the image name
 reponame="lamp"
 
@@ -59,7 +59,7 @@ buildah config --entrypoint=/ \
     --label="org.nethserver.tcp-ports-demand=1" \
     --label="org.nethserver.rootfull=0" \
     --label="org.nethserver.min-core=3.12.4-0" \
-    --label="org.nethserver.images=ghcr.io/stephdl/lamp-server-php8.3:${IMAGETAG}" \
+    --label="org.nethserver.images=ghcr.io/nethserver/lamp-server-php8.3:${IMAGETAG}" \
     "${container}"
 # Commit the image
 buildah commit "${container}" "${repobase}/${reponame}"
