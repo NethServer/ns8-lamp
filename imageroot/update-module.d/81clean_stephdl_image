@@ -8,7 +8,7 @@ set -e
 # Redirect any output to the journal (stderr)
 exec 1>&2
 
-# Needed for the migration to NethServer, we have started with nethserver/lamp:1.2.4
+# Needed for the migration to the NethServer github repository, we have started with nethserver/lamp:1.2.4
 
 # for migration when we did not have PHP_VERSION set, we remove the old images with static PHP version
 for img_id in $(podman images --quiet --filter=reference='ghcr.io/stephdl/*'); do
