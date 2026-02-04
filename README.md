@@ -15,11 +15,7 @@ or
     podman exec -ti apache2-app bash
 ```
 
-Once inside the container, navigate to the /app directory:
-
-`cd /app`
-
-From here, you can download your web application files using one of the following methods:
+You can download your web application files using one of the following methods:
 
 - git:
 
@@ -63,10 +59,6 @@ Once you have saved the FQDN in the user interface, in your browser, go to https
 
 `runagent -m lamp1 podman exec -ti apache2-app bash`
 
-- go to the web folder within the container.
-  
-`cd /app`
-
 - download wordpress
   
 `wget https://fr.wordpress.org/latest-fr_FR.zip`
@@ -88,17 +80,17 @@ chown -R www-data:staff wp-content/
 chown -R www-data:staff wp-admin/
 ```
 
-⚠️ Important: Please delete the phpinfo.php file in the `/app` folder after installing the web application to avoid exposing sensitive information.
+⚠️ Important: Please delete the phpinfo.php file after installing the web application to avoid exposing sensitive information.
 
-`rm -f /app/phpinfo.php`
+`rm -f phpinfo.php`
 
-- Go to https://FQDN and complete the installation using the web folder. You'll need the credentials of a MySQL user and the associated database name, which can be created either during the initial setup in the user interface or through phpMyAdmin.
+- Go to https://FQDN and complete the installation. You'll need the credentials of a MySQL user and the associated database name, which can be created either during the initial setup in the user interface or through phpMyAdmin.
   
 ![Capture d’écran du 2024-08-27 15-42-22](https://github.com/user-attachments/assets/2f57fe3d-a144-4506-9e4e-9668560e7060)
 
 ### Custom php or apache directives
 
-You can use a `.htaccess` file directly in the `/app` directory of the container. It will be read and applied accordingly.
+You can use a `.htaccess` file directly in the application directory. It will be read and applied accordingly.
 
 ### Custom mysql directives
 
