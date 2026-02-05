@@ -21,7 +21,7 @@ TimeoutStopSec=70
 ExecStartPre=/bin/rm -f %t/apache2-app.pid %t/apache2-app.ctr-id
 ExecStartPre=-runagent discover-smarthost
 ExecStartPre=-runagent discover-ldap
-ExecStartPre=/bin/mkdir -vp initdb.d crontabs
+ExecStartPre=/bin/mkdir -vp initdb.d crontabs scripts
 ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --cidfile %t/apache2-app.ctr-id --cgroups=no-conmon \
     --pod-id-file %t/lamp.pod-id --replace -d --name  apache2-app \
@@ -31,6 +31,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --volume ./conf.d/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:Z \
     --volume ./conf.d/mysqldump.cnf:/etc/mysql/conf.d/mysqldump.cnf:Z \
     --volume ./crontabs:/var/spool/cron/crontabs:Z \
+    --volume ./scripts:/usr/local/sbin:z \
     --env SMTP_* \
     --env LAMP_* \
     --env CREATE_MYSQL_USER=${CREATE_MYSQL_USER} \
