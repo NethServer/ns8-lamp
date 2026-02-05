@@ -26,6 +26,9 @@ ENV PHPMYADMIN_ENABLED True
 ARG PHP_VERSION
 ENV PHP_VERSION=$PHP_VERSION
 
+# Add custom scripts path
+ENV PATH=/opt/ns8-lamp/scripts:$PATH
+
 # Tweaks to give Apache/PHP write permissions to the app
 RUN usermod -u ${BOOT2DOCKER_ID} www-data && \
     usermod -G staff www-data && \
@@ -160,6 +163,7 @@ RUN echo "Editing APACHE_RUN_GROUP environment variable" && \
 RUN echo "Setting up MySQL directories" && \
         mkdir -p /var/run/mysqld && \
         mkdir -p /var/log/mysql && \
+        mkdir -p /opt/ns8-lamp/scripts && \
         chown -R mysql:mysql /var/run/mysqld && \
         chown -R mysql:mysql /var/log/mysql
 
