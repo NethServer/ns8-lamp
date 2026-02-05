@@ -31,7 +31,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --volume ./conf.d/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:Z \
     --volume ./conf.d/mysqldump.cnf:/etc/mysql/conf.d/mysqldump.cnf:Z \
     --volume ./crontabs:/var/spool/cron/crontabs:Z \
-    --volume ./scripts:/usr/local/sbin:z \
+    --volume ./scripts:/opt/ns8-lamp/scripts:Z \
     --env SMTP_* \
     --env LAMP_* \
     --env CREATE_MYSQL_USER=${CREATE_MYSQL_USER} \
