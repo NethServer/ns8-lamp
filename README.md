@@ -157,7 +157,7 @@ you can verify the cron by `podman exec -ti apache2-app crontab -l`
 
 ## Custom scripts
 
-Custom scripts can be stored in the `./scripts` directory in the module state folder. These scripts are automatically mounted into the container at `/usr/local/sbin`, making them available as system commands that can be executed from anywhere within the container.
+Custom scripts can be stored in the `./scripts` directory in the module state folder. These scripts are automatically mounted into the container at `/opt/ns8-lamp/scripts`, making them available as system commands that can be executed from anywhere within the container.
 
 This is useful for creating custom maintenance scripts, extending cron tasks with your own scripts, and adding helper commands for application management.
 
