@@ -260,7 +260,7 @@
                     }}</template>
                   </NsTextInput>
                   <label class="bx--label">
-                    {{ $t('settings.select_php_max_execution_time_limit') }}
+                    {{ $t("settings.select_php_max_execution_time_limit") }}
                     <cv-interactive-tooltip
                       alignment="center"
                       direction="top"
@@ -598,8 +598,11 @@ export default {
         }
         isValidationOk = false;
       }
-      if (parseInt(this.php_upload_max_filesize) > parseInt(this.php_memory_limit)) {
-        this.error.php_upload_max_filesize = "settings.php_upload_max_filesize_must_be_less_than_memory_limit";
+      if (
+        parseInt(this.php_upload_max_filesize) > parseInt(this.php_memory_limit)
+      ) {
+        this.error.php_upload_max_filesize =
+          "settings.php_upload_max_filesize_must_be_less_than_memory_limit";
 
         if (isValidationOk) {
           this.focusElement("php_upload_max_filesize");
