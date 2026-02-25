@@ -49,6 +49,8 @@ You can also access phpMyAdmin by navigating to:
 
 The username is admin, and the password is the one you set in the user interface.
 
+> **Note:** phpMyAdmin can be enabled or disabled via the `phpmyadmin_enabled` parameter in `configure-module`. When disabled, the `/phpmyadmin` path will not be accessible.
+
 ⚠️ Important: Please delete the phpinfo.php file in the `/app` folder after installing the web application to avoid exposing sensitive information.
 
 ### Wordpress installation example
@@ -69,8 +71,10 @@ Once you have saved the FQDN in the user interface, in your browser, go to https
 
 - move web files to the root of the web folder
 ```
+shopt -s dotglob
 mv wordpress/* .
-mv wordpress/.* .
+shopt -u dotglob
+rmdir wordpress
 ```
 
 - allow apache to write in wp-content and wp-admin
@@ -90,7 +94,7 @@ chown -R www-data:staff wp-admin/
 
 ### Custom php or apache directives
 
-You can use a `.htaccess` file directly in the application directory. It will be read and applied accordingly.
+A `.htaccess` file is automatically created in the `/app` directory on first start, pre-populated with commented-out examples of common directives. You can edit it directly to apply custom PHP or Apache settings — it will be read and applied accordingly.
 
 ### Custom mysql directives
 
@@ -210,7 +214,7 @@ EOF
 
 The above command will:
 - start and configure the lamp instance
-- configure a virtual host for trafik to access the instance
+- configure a virtual host for Traefik to access the instance
 
 ## Get the configuration
 You can retrieve the configuration with
@@ -241,8 +245,7 @@ restarts the main module service.
 
 See also the `systemd/user/lamp.service` file.
 
-This setting discovery is just an example to understand how the module is
-expected to work: it can be rewritten or discarded completely.
+The smarthost discovery is fully implemented and active: the `bin/discover-smarthost` script and the `events/smarthost-changed/` handler ensure the module always reflects the current cluster-wide smarthost configuration.
 
 
 We use ssmtp to handle sending emails from our server. The php.ini configuration is set to use the `ssmtp -t` command, allowing PHP to send emails seamlessly via ssmtp.
@@ -350,4 +353,4 @@ Translated with [Weblate](https://hosted.weblate.org/projects/ns8/).
 To setup the translation process:
 
 - add [GitHub Weblate app](https://docs.weblate.org/en/latest/admin/continuous.html#github-setup) to your repository
-- add your repository to [hosted.weblate.org]((https://hosted.weblate.org) or ask a NethServer developer to add it to ns8 Weblate project
+- add your repository to [hosted.weblate.org](https://hosted.weblate.org) or ask a NethServer developer to add it to ns8 Weblate project
