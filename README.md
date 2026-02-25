@@ -133,8 +133,8 @@ alternatively you can connect directly to the container and modify
 `podman exec -ti apache2-app bash`
 
 ```
-nano /etc/mysql/conf.d/myqsl.cnf
-nano /etc/mysql/conf.d/myqsldump.cnf
+nano /etc/mysql/conf.d/mysql.cnf
+nano /etc/mysql/conf.d/mysqldump.cnf
 ```
 
 ## cron
@@ -168,7 +168,7 @@ Output example:
 
 ## Configure
 
-Let's assume that the mattermost instance is named `lamp1`.
+Let's assume that the lamp instance is named `lamp1`.
 
 Launch `configure-module`, by setting the following parameters:
 - `host`: a fully qualified domain name for the application
@@ -180,6 +180,10 @@ Launch `configure-module`, by setting the following parameters:
 - `mysql_user_name`: name of the mysql user
 - `mysql_user_pass`: password of the mysql user
 - `php_upload_max_filesize`: maximum file size and maximum post size in MB
+- `php_memory_limit`: maximum amount of memory a script may consume in MB
+- `php_max_execution_time`: maximum execution time of each PHP script in seconds
+- `php_version`: PHP version to use (e.g. `8.3`)
+- `phpmyadmin_enabled`: enable or disable phpMyAdmin (true/false)
 
 
 Example:
@@ -195,7 +199,11 @@ api-cli run configure-module --agent module/lamp1 --data - <<EOF
     "mysql_user_db": "foo",
     "mysql_user_name": "foo",
     "mysql_user_pass": "Nethesis,1234",
-    "php_upload_max_filesize": "100"
+    "php_upload_max_filesize": "100",
+    "php_memory_limit": "512",
+    "php_max_execution_time": "600",
+    "php_version": "8.3",
+    "phpmyadmin_enabled": true
 }
 EOF
 ```
