@@ -308,7 +308,9 @@
                       loading.getConfiguration || loading.configureModule
                     "
                     :unitLabel="
-                      parseInt(MaxExecutionTime) === 0 ? $t('settings.unlimited') : $tc('settings.second', parseInt(MaxExecutionTime))
+                      parseInt(MaxExecutionTime) === 0
+                        ? $t('settings.unlimited')
+                        : $tc('settings.second', parseInt(MaxExecutionTime))
                     "
                   />
                 </template>
