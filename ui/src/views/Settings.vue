@@ -225,40 +225,62 @@
                     <cv-dropdown-item value="8.4">PHP 8.4</cv-dropdown-item>
                     <cv-dropdown-item value="8.5">PHP 8.5</cv-dropdown-item>
                   </cv-dropdown>
-                  <NsTextInput
-                    :label="$t('settings.php_upload_max_filesize')"
+                  <label class="bx--label">
+                    {{ $t("settings.php_upload_max_filesize") }}
+                    <cv-interactive-tooltip
+                      alignment="center"
+                      direction="top"
+                      class="info"
+                    >
+                      <template slot="content">
+                        <div>
+                          {{ $t("settings.php_upload_max_filesize_tooltip") }}
+                        </div>
+                      </template>
+                    </cv-interactive-tooltip>
+                  </label>
+                  <NsSlider
                     v-model="php_upload_max_filesize"
-                    type="number"
-                    :min="100"
-                    :max="2048"
-                    :placeholder="
-                      $t('settings.php_upload_max_filesize_placeholder')
+                    min="100"
+                    max="4096"
+                    step="1"
+                    stepMultiplier="10"
+                    minLabel=""
+                    maxLabel=""
+                    :invalidMessage="$t(error.php_upload_max_filesize)"
+                    :disabled="
+                      loading.getConfiguration || loading.configureModule
                     "
-                    :disabled="stillLoading"
-                    :invalid-message="$t(error.php_upload_max_filesize)"
-                    ref="php_upload_max_filesize"
-                    :helper-text="$t('settings.php_upload_max_filesize_helper')"
-                  >
-                    <template #tooltip>{{
-                      $t("settings.php_upload_max_filesize_tooltip")
-                    }}</template>
-                  </NsTextInput>
-                  <NsTextInput
-                    :label="$t('settings.php_memory_limit')"
+                    :unitLabel="$t('settings.megabytes')"
+                  />
+                  <label class="bx--label">
+                    {{ $t("settings.php_memory_limit") }}
+                    <cv-interactive-tooltip
+                      alignment="center"
+                      direction="top"
+                      class="info"
+                    >
+                      <template slot="content">
+                        <div>
+                          {{ $t("settings.php_memory_limit_tooltip") }}
+                        </div>
+                      </template>
+                    </cv-interactive-tooltip>
+                  </label>
+                  <NsSlider
                     v-model="php_memory_limit"
-                    type="number"
-                    :min="512"
-                    :max="4096"
-                    :placeholder="$t('settings.php_memory_limit_placeholder')"
-                    :disabled="stillLoading"
-                    :invalid-message="$t(error.php_memory_limit)"
-                    ref="php_memory_limit"
-                    :helper-text="$t('settings.php_memory_limit_helper')"
-                  >
-                    <template #tooltip>{{
-                      $t("settings.php_memory_limit_tooltip")
-                    }}</template>
-                  </NsTextInput>
+                    min="512"
+                    max="4096"
+                    step="1"
+                    stepMultiplier="10"
+                    minLabel=""
+                    maxLabel=""
+                    :invalidMessage="$t(error.php_memory_limit)"
+                    :disabled="
+                      loading.getConfiguration || loading.configureModule
+                    "
+                    :unitLabel="$t('settings.megabytes')"
+                  />
                   <label class="bx--label">
                     {{ $t("settings.select_php_max_execution_time_limit") }}
                     <cv-interactive-tooltip
@@ -273,21 +295,22 @@
                       </template>
                     </cv-interactive-tooltip>
                   </label>
-                  <cv-slider
-                    :light="true"
+                  <NsSlider
+                    v-model="MaxExecutionTime"
+                    min="0"
+                    max="3600"
+                    step="1"
+                    stepMultiplier="1"
+                    minLabel=""
+                    maxLabel=""
+                    :invalidMessage="$t(error.MaxExecutionTime)"
                     :disabled="
                       loading.getConfiguration || loading.configureModule
                     "
-                    :min="'0'"
-                    :max="'3600'"
-                    :value="MaxExecutionTime"
-                    v-model="MaxExecutionTime"
-                    :step="'1'"
-                    :step-multiplier="'1'"
-                    :min-label="$t('settings.Min')"
-                    :max-label="$t('settings.Max')"
-                  >
-                  </cv-slider>
+                    :unitLabel="
+                      parseInt(MaxExecutionTime) === 0 ? $t('settings.unlimited') : $tc('settings.second', parseInt(MaxExecutionTime))
+                    "
+                  />
                 </template>
               </cv-accordion-item>
             </cv-accordion>
@@ -429,6 +452,18 @@ export default {
   beforeRouteLeave(to, from, next) {
     clearInterval(this.urlCheckInterval);
     next();
+  },
+  watch: {
+    php_upload_max_filesize(newVal) {
+      if (parseInt(newVal) > parseInt(this.php_memory_limit)) {
+        this.php_memory_limit = newVal;
+      }
+    },
+    php_memory_limit(newVal) {
+      if (parseInt(this.php_upload_max_filesize) > parseInt(newVal)) {
+        this.php_upload_max_filesize = newVal;
+      }
+    },
   },
   methods: {
     goToCertificates() {
@@ -595,17 +630,6 @@ export default {
 
         if (isValidationOk) {
           this.focusElement("mysql_user_db");
-        }
-        isValidationOk = false;
-      }
-      if (
-        parseInt(this.php_upload_max_filesize) > parseInt(this.php_memory_limit)
-      ) {
-        this.error.php_upload_max_filesize =
-          "settings.php_upload_max_filesize_must_be_less_than_memory_limit";
-
-        if (isValidationOk) {
-          this.focusElement("php_upload_max_filesize");
         }
         isValidationOk = false;
       }
