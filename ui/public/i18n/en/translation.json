@@ -31,10 +31,8 @@
   },
   "settings": {
     "title": "Settings",
-    "configure_instance": "Configure {instance}",
     "save": "Save",
     "lamp_fqdn": "lamp hostname (FQDN)",
-    "lets_encrypt": "Request LE Certificate",
     "http_to_https": "Force HTTPS",
     "enabled": "Enabled",
     "disabled": "Disabled",
@@ -50,10 +48,7 @@
     "mysql_admin_pass_helper": "This password cannot be changed from the UI once set, use phpMyAdmin",
     "create_mysql_user": "Create MySQL user and database",
     "php_upload_max_filesize": "PHP upload max filesize",
-    "php_upload_max_filesize_placeholder": "Enter PHP upload max filesize",
     "php_upload_max_filesize_tooltip": "Maximum size of files that can be uploaded to the server",
-    "php_upload_max_filesize_helper": "This value is in MB",
-    "php_upload_max_filesize_must_be_less_than_memory_limit": "Upload max filesize must be less than memory limit",
     "mysql_user_name": "MySQL user name",
     "mysql_user_name_placeholder": "Enter MySQL user name",
     "mysql_user_name_tooltip": "Name of the MySQL user to create",
@@ -68,15 +63,14 @@
     "mysql_user_db_helper": "This database cannot be changed from the UI once set, use phpMyAdmin",
     "phpmyadmin_enabled": "Enable phpMyAdmin",
     "php_memory_limit": "PHP memory limit",
-    "php_memory_limit_helper": "This value is in MB",
-    "php_memory_limit_placeholder": "Enter PHP memory limit",
     "php_memory_limit_tooltip": "Maximum amount of memory a script may consume",
     "select_php_version": "Select PHP version",
     "container_version_will_be_installed": "The container version will be installed",
     "select_php_max_execution_time_limit": "PHP max execution time limit",
-    "Min": "Min",
-    "Max": "Max",
-    "php_max_execution_time_helper": "Enter 0 to set no time limit, otherwise enter the maximum execution time in seconds"
+    "php_max_execution_time_helper": "Enter 0 to set no time limit, otherwise enter the maximum execution time in seconds",
+    "megabytes": "MB",
+    "second": "second | seconds",
+    "unlimited": "Unlimited"
 
   },
   "about": {
