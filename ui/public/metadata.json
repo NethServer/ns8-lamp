@@ -3,7 +3,7 @@
   "description": {
     "en": "LAMP provides a comprehensive and open-source platform for developing, deploying, and managing dynamic PHP web applications and websites"
   },
-  "categories": [],
+  "categories": ["web"],
   "authors": [
     {
       "name": "Stephane de Labrusse",
