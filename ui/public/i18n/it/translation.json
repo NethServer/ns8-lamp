@@ -2,7 +2,7 @@
     "common": {
         "required": "Obbligatorio",
         "work_in_progress": "Lavoro in corso",
-        "processing": "Elaborazione...",
+        "processing": "Elaborazione in corso…",
         "required_min_length8": "Richiesto e deve essere lungo almeno 8 caratteri"
     },
     "status": {
