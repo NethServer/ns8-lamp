@@ -2,8 +2,5 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "local>NethServer/.github:ns8"
-    ],
-    "dockerfile": {
-        "fileMatch": ["(^|/)Containerfile(\\.\\w+)?$", "(^|/)Dockerfile$"]
-    }
+    ]
 }
