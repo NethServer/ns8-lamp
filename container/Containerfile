@@ -69,6 +69,42 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer
 
+# Verify PHP extensions — derived automatically from installed deb packages.
+# Three checks per extension:
+#   exit 20 — extension not loaded by php -m
+#   exit 30 — .so file missing on disk
+#   exit 40 — .so has unresolved runtime dependencies (ldd)
+RUN php_ver=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;') && \
+    ext_dir=$(php -r 'echo PHP_EXTENSION_DIR;') && \
+    skip="cli|common|dev|dbg|pdo-mysql" && \
+    loaded_exts=$(php -m 2>/dev/null | tr '[:upper:]' '[:lower:]') && \
+    dpkg -l "php${php_ver}-*" 2>/dev/null | awk '/^ii/{print $2}' | \
+    while IFS= read -r pkg; do \
+        ext="${pkg#php${php_ver}-}"; \
+        echo "${ext}" | grep -qE "^(${skip})$" && continue; \
+        if [ "${ext}" = "mysql" ]; then \
+            exts="mysqli pdo_mysql"; \
+        else \
+            exts="${ext}"; \
+        fi; \
+        for e in ${exts}; do \
+            if [ "${e}" = "opcache" ]; then \
+                echo "${loaded_exts}" | grep -qi "opcache" \
+                    || { echo "Missing PHP extension: ${e}"; exit 20; }; \
+            else \
+                echo "${loaded_exts}" | grep -qi "^${e}$" \
+                    || { echo "Missing PHP extension: ${e}"; exit 20; }; \
+            fi; \
+            ext_so="${ext_dir}/${e}.so"; \
+            [ -f "${ext_so}" ] \
+                || { echo "Missing .so for extension: ${e} (${ext_so})"; exit 30; }; \
+            if ldd "${ext_so}" 2>&1 | grep -q "not found"; then \
+                echo "Missing runtime dependency for ${e}.so"; exit 40; \
+            fi; \
+        done; \
+    done && \
+    echo "PHP ${php_ver}: all extensions verified OK (php -m, .so, ldd)"
+
 # Set working directory
 WORKDIR /app
 
