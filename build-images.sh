@@ -20,8 +20,9 @@ reponame="lamp"
 PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4" "8.5")
 PHPMYADMIN_VERSION="5.2.3"
 
-# Build the shared base image once (common packages, phpMyAdmin, Apache config...)
-BASE_IMAGE="${repobase}/lamp-base"
+# Build the shared base image once (common packages, phpMyAdmin, Apache config...).
+# Uses a local-only name (no registry prefix) so it is never accidentally published.
+BASE_IMAGE="lamp-base-build"
 echo "Building shared base image..."
 podman build \
     --force-rm \
@@ -64,8 +65,13 @@ done
 
 if [[ ${#failed[@]} -gt 0 ]]; then
     echo "ERROR: The following PHP version builds failed: ${failed[*]}" >&2
+    podman rmi "${BASE_IMAGE}" 2>/dev/null || true
     exit 1
 fi
+
+# Remove the base image: it is an intermediate build artifact, not meant to be published
+echo "Removing intermediate base image..."
+podman rmi "${BASE_IMAGE}" 2>/dev/null || true
 
 # Create a new empty container image
 container=$(buildah from scratch)
