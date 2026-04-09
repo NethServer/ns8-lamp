@@ -20,19 +20,52 @@ reponame="lamp"
 PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4" "8.5")
 PHPMYADMIN_VERSION="5.2.3"
 
-# Build images for each PHP version
+# Build the shared base image once (common packages, phpMyAdmin, Apache config...)
+BASE_IMAGE="${repobase}/lamp-base"
+echo "Building shared base image..."
+podman build \
+    --force-rm \
+    --layers \
+    --tag "${BASE_IMAGE}" \
+    --build-arg "PHPMYADMIN_VERSION=${PHPMYADMIN_VERSION}" \
+    --file container/Containerfile.base \
+    container
+
+# Build all PHP version images in parallel
+echo "Building PHP version images in parallel..."
+pids=()
+failed=()
+
 for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
-    echo "Building lamp-server for PHP ${PHP_VERSION}..."
+    echo "  Starting build for PHP ${PHP_VERSION}..."
     podman build \
         --force-rm \
         --layers \
         --tag "${repobase}/lamp-server-php${PHP_VERSION}" \
+        --build-arg "BASE_IMAGE=${BASE_IMAGE}" \
         --build-arg "PHP_VERSION=${PHP_VERSION}" \
-        --build-arg "PHPMYADMIN_VERSION=${PHPMYADMIN_VERSION}" \
-        container
-
-    images+=("${repobase}/lamp-server-php${PHP_VERSION}")
+        --file container/Containerfile \
+        container &
+    pids+=("$!:${PHP_VERSION}")
 done
+
+# Wait for all builds and collect failures
+for pid_ver in "${pids[@]}"; do
+    pid="${pid_ver%%:*}"
+    ver="${pid_ver##*:}"
+    if wait "${pid}"; then
+        echo "  PHP ${ver}: build OK"
+        images+=("${repobase}/lamp-server-php${ver}")
+    else
+        echo "  PHP ${ver}: build FAILED" >&2
+        failed+=("${ver}")
+    fi
+done
+
+if [[ ${#failed[@]} -gt 0 ]]; then
+    echo "ERROR: The following PHP version builds failed: ${failed[*]}" >&2
+    exit 1
+fi
 
 # Create a new empty container image
 container=$(buildah from scratch)
@@ -78,7 +111,7 @@ images+=("${repobase}/${reponame}")
 #
 
 #
-# Setup CI when pushing to Github. 
+# Setup CI when pushing to Github.
 # Warning! docker::// protocol expects lowercase letters (,,)
 if [[ -n "${CI}" ]]; then
     # Set output value for Github Actions
