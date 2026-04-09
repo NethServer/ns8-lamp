@@ -31,7 +31,6 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends software-properties-common python3-launchpadlib && \
     LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
     apt-get update && \
     apt-get -y upgrade && \
     apt-get -y install --no-install-recommends \
