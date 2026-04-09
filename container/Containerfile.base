@@ -39,6 +39,7 @@ RUN apt-get update && \
         nano \
         wget \
         git \
+        tree \
         cron \
         apache2 \
         mariadb-server \
