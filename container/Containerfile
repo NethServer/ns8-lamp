@@ -11,7 +11,7 @@ ENV PHP_MEMORY_LIMIT 512M
 ENV PHP_MAX_EXECUTION_TIME 600
 ENV PHPMYADMIN_ENABLED True
 
-# Install PHP version-specific packages, configure ini and clean up in a single layer
+# Install PHP version-specific packages and clean up in a single layer
 RUN apt-get update && \
     OPCACHE_PKG=$(if [ "${PHP_VERSION}" != "8.5" ]; then echo "php${PHP_VERSION}-opcache"; fi) && \
     apt-get -y install --no-install-recommends \

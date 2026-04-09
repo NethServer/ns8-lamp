@@ -1,5 +1,5 @@
 FROM docker.io/ubuntu:noble-20260217
-MAINTAINER stephane de Labrusse <stephdl@de-labrusse.fr>
+LABEL org.opencontainers.image.authors="stephane de Labrusse <stephdl@de-labrusse.fr>"
 ENV REFRESHED_AT 2024-08-25
 
 # based on Matthew Rayner <hello@rayner.io> https://github.com/mattrayner/docker-lamp
@@ -32,7 +32,6 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends software-properties-common python3-launchpadlib && \
     LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
     apt-get update && \
-    apt-get -y upgrade && \
     apt-get -y install --no-install-recommends \
         supervisor \
         vim \

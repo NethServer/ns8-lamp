@@ -21,8 +21,9 @@ PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4" "8.5")
 PHPMYADMIN_VERSION="5.2.3"
 
 # Build the shared base image once (common packages, phpMyAdmin, Apache config...).
-# Uses a local-only name (no registry prefix) so it is never accidentally published.
-BASE_IMAGE="lamp-base-build"
+# Uses the localhost/ prefix so it is treated as a local image and never pulled
+# from or pushed to a remote registry.
+BASE_IMAGE="localhost/lamp-base-build"
 echo "Building shared base image..."
 podman build \
     --force-rm \
@@ -42,6 +43,7 @@ for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
     podman build \
         --force-rm \
         --layers \
+        --pull-never \
         --tag "${repobase}/lamp-server-php${PHP_VERSION}" \
         --build-arg "BASE_IMAGE=${BASE_IMAGE}" \
         --build-arg "PHP_VERSION=${PHP_VERSION}" \
@@ -117,10 +119,10 @@ images+=("${repobase}/${reponame}")
 #
 
 #
-# Setup CI when pushing to Github.
+# Setup CI when pushing to GitHub.
 # Warning! docker::// protocol expects lowercase letters (,,)
 if [[ -n "${CI}" ]]; then
-    # Set output value for Github Actions
+    # Set output value for GitHub Actions
     printf "images=%s\n" "${images[*],,}" >> "${GITHUB_OUTPUT}"
 else
     # Just print info for manual push
