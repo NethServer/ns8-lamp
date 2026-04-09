@@ -11,59 +11,60 @@ ENV PHP_MEMORY_LIMIT 512M
 ENV PHP_MAX_EXECUTION_TIME 600
 ENV PHPMYADMIN_ENABLED True
 
-# Install PHP version-specific packages
+# Install PHP version-specific packages, configure ini and clean up in a single layer
 RUN apt-get update && \
-  OPCACHE_PKG=$(if [ "${PHP_VERSION}" != "8.5" ]; then echo "php${PHP_VERSION}-opcache"; fi) && \
-  apt-get -y install \
-      libapache2-mod-php${PHP_VERSION} \
-      php${PHP_VERSION}-ftp \
-      php${PHP_VERSION}-ldap \
-      php${PHP_VERSION}-pdo-mysql \
-      php${PHP_VERSION}-mysql \
-      php${PHP_VERSION}-apcu \
-      php${PHP_VERSION}-gd \
-      php${PHP_VERSION}-xml \
-      php${PHP_VERSION}-mbstring \
-      php${PHP_VERSION}-memcached \
-      php${PHP_VERSION}-imagick \
-      php${PHP_VERSION}-intl \
-      php${PHP_VERSION}-bcmath \
-      php${PHP_VERSION}-bz2 \
-      php${PHP_VERSION}-gettext \
-      php${PHP_VERSION}-gmp \
-      php${PHP_VERSION}-imap \
-      php${PHP_VERSION}-odbc \
-      php${PHP_VERSION}-soap \
-      php${PHP_VERSION}-sqlite3 \
-      php${PHP_VERSION}-tidy \
-      php${PHP_VERSION}-zip \
-      php${PHP_VERSION}-curl \
-      php${PHP_VERSION}-cli \
-      php${PHP_VERSION}-common \
-      ${OPCACHE_PKG} \
-      php${PHP_VERSION}-readline && \
-  apt-get -y autoremove && \
-  apt-get -y clean
+    OPCACHE_PKG=$(if [ "${PHP_VERSION}" != "8.5" ]; then echo "php${PHP_VERSION}-opcache"; fi) && \
+    apt-get -y install --no-install-recommends \
+        libapache2-mod-php${PHP_VERSION} \
+        php${PHP_VERSION}-ftp \
+        php${PHP_VERSION}-ldap \
+        php${PHP_VERSION}-pdo-mysql \
+        php${PHP_VERSION}-mysql \
+        php${PHP_VERSION}-apcu \
+        php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-xml \
+        php${PHP_VERSION}-mbstring \
+        php${PHP_VERSION}-memcached \
+        php${PHP_VERSION}-imagick \
+        php${PHP_VERSION}-intl \
+        php${PHP_VERSION}-bcmath \
+        php${PHP_VERSION}-bz2 \
+        php${PHP_VERSION}-gettext \
+        php${PHP_VERSION}-gmp \
+        php${PHP_VERSION}-imap \
+        php${PHP_VERSION}-odbc \
+        php${PHP_VERSION}-soap \
+        php${PHP_VERSION}-sqlite3 \
+        php${PHP_VERSION}-tidy \
+        php${PHP_VERSION}-zip \
+        php${PHP_VERSION}-curl \
+        php${PHP_VERSION}-cli \
+        php${PHP_VERSION}-common \
+        ${OPCACHE_PKG} \
+        php${PHP_VERSION}-readline && \
+    apt-get -y autoremove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN echo "Updating settings for PHP ${PHP_VERSION}" && \
-        sed -ri -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^memory_limit.*/memory_limit = ${PHP_MEMORY_LIMIT}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^max_execution_time.*/max_execution_time = ${PHP_MAX_EXECUTION_TIME}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^;date.timezone.*/date.timezone = Europe\/London/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s|;sendmail_path =|sendmail_path = /usr/sbin/ssmtp -t|" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e  "s/;date.timezone =/date.timezone = UTC/g" /etc/php/${PHP_VERSION}/cli/php.ini \
-        -e "s|^;error_log = syslog|error_log = /dev/stderr|" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s|^;error_log = syslog|error_log = /dev/stderr|" /etc/php/${PHP_VERSION}/cli/php.ini
+RUN sed -ri \
+        -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" \
+        -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" \
+        -e "s/^memory_limit.*/memory_limit = ${PHP_MEMORY_LIMIT}/" \
+        -e "s/^max_execution_time.*/max_execution_time = ${PHP_MAX_EXECUTION_TIME}/" \
+        -e "s/^;date.timezone.*/date.timezone = Europe\/London/" \
+        -e "s|;sendmail_path =|sendmail_path = /usr/sbin/ssmtp -t|" \
+        -e "s|^;error_log = syslog|error_log = /dev/stderr|" \
+        /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -ri \
+        -e "s/;date.timezone =/date.timezone = UTC/g" \
+        -e "s|^;error_log = syslog|error_log = /dev/stderr|" \
+        /etc/php/${PHP_VERSION}/cli/php.ini
 
 # Add composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer
-
-# Final cleanup
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Set working directory
 WORKDIR /app
