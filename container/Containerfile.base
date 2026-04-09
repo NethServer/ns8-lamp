@@ -72,10 +72,12 @@ ADD mysql_init.sh /mysql_init.sh
 
 # Add phpmyadmin: download, extract, configure and remove archive in a single layer
 RUN wget -O /tmp/phpmyadmin.tar.gz https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz && \
+    wget -O /tmp/phpmyadmin.tar.gz.sha256 https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz.sha256 && \
+    (cd /tmp && sha256sum --check phpmyadmin.tar.gz.sha256) && \
     tar xfz /tmp/phpmyadmin.tar.gz -C /var/www && \
     ln -s /var/www/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages /var/www/phpmyadmin && \
     mv /var/www/phpmyadmin/config.sample.inc.php /var/www/phpmyadmin/config.inc.php && \
-    rm /tmp/phpmyadmin.tar.gz
+    rm /tmp/phpmyadmin.tar.gz /tmp/phpmyadmin.tar.gz.sha256
 
 # config to enable .htaccess
 ADD apache_default /etc/apache2/sites-available/000-default.conf
