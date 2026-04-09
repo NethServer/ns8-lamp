@@ -62,8 +62,8 @@ RUN sed -ri \
 
 # Add composer - verify installer signature before executing (official procedure)
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    EXPECTED_SIG="$(php -r "copy('https://composer.github.io/installer.sig', 'php://stdout');")" && \
-    ACTUAL_SIG="$(php -r "echo hash_file('sha384', 'composer-setup.php');")" && \
+    EXPECTED_SIG="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')" && \
+    ACTUAL_SIG="$(php -r 'echo hash_file("sha384", "composer-setup.php");')" && \
     if [ "$EXPECTED_SIG" != "$ACTUAL_SIG" ]; then echo 'ERROR: Composer installer signature mismatch' >&2; rm composer-setup.php; exit 1; fi && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
