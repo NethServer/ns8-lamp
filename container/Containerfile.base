@@ -1,6 +1,6 @@
 FROM docker.io/ubuntu:noble-20260217
 LABEL org.opencontainers.image.authors="stephane de Labrusse <stephdl@de-labrusse.fr>"
-ENV REFRESHED_AT 2024-08-25
+ENV REFRESHED_AT 2026-02-17
 
 # based on Matthew Rayner <hello@rayner.io> https://github.com/mattrayner/docker-lamp
 # based on dgraziotin/lamp
@@ -15,6 +15,9 @@ ENV BOOT2DOCKER_GID 50
 
 ARG PHPMYADMIN_VERSION
 ENV PHPMYADMIN_VERSION=$PHPMYADMIN_VERSION
+# Fail early with a clear message if PHPMYADMIN_VERSION was not provided.
+RUN test -n "$PHPMYADMIN_VERSION" || \
+    { echo "ERROR: PHPMYADMIN_VERSION build-arg is required. Pass --build-arg PHPMYADMIN_VERSION=<version>." >&2; exit 1; }
 
 # Tweaks to give Apache/PHP write permissions to the app
 RUN usermod -u ${BOOT2DOCKER_ID} www-data && \

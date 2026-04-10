@@ -1,3 +1,5 @@
+# BASE_IMAGE must point to the locally built base image (built by build-images.sh).
+# Example: --build-arg BASE_IMAGE=localhost/ns8-lamp-base:latest
 ARG BASE_IMAGE
 FROM ${BASE_IMAGE}
 
