@@ -1,20 +1,10 @@
-FROM docker.io/ubuntu:noble-20260217
-MAINTAINER stephane de Labrusse <stephdl@de-labrusse.fr>
-ENV REFRESHED_AT 2024-08-25
+# BASE_IMAGE must point to the locally built base image (built by build-images.sh).
+# Example: --build-arg BASE_IMAGE=localhost/ns8-lamp-base:latest
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
-# based on Matthew Rayner <hello@rayner.io> https://github.com/mattrayner/docker-lamp
-# based on dgraziotin/lamp
-# MAINTAINER Daniel Graziotin <daniel@ineed.coffee>
-# updated for Ubuntu 20.04 LTS/PHP 7.4/PHP 8.0 Ferdinand Kasper <fkasper@modus-operandi.at>
-
-ENV DOCKER_USER_ID 501 
-ENV DOCKER_USER_GID 20
-
-ENV BOOT2DOCKER_ID 1005
-ENV BOOT2DOCKER_GID 50
-
-ARG PHPMYADMIN_VERSION
-ENV PHPMYADMIN_VERSION=$PHPMYADMIN_VERSION
+ARG PHP_VERSION
+ENV PHP_VERSION=$PHP_VERSION
 
 #Environment variables to configure php
 ENV PHP_UPLOAD_MAX_FILESIZE 100M
@@ -23,148 +13,99 @@ ENV PHP_MEMORY_LIMIT 512M
 ENV PHP_MAX_EXECUTION_TIME 600
 ENV PHPMYADMIN_ENABLED True
 
-ARG PHP_VERSION
-ENV PHP_VERSION=$PHP_VERSION
+# Install PHP version-specific packages and clean up in a single layer
+RUN apt-get update && \
+    OPCACHE_PKG=$(if [ "${PHP_VERSION}" != "8.5" ]; then echo "php${PHP_VERSION}-opcache"; fi) && \
+    apt-get -y install --no-install-recommends \
+        libapache2-mod-php${PHP_VERSION} \
+        php${PHP_VERSION}-ftp \
+        php${PHP_VERSION}-ldap \
+        php${PHP_VERSION}-pdo-mysql \
+        php${PHP_VERSION}-mysql \
+        php${PHP_VERSION}-apcu \
+        php${PHP_VERSION}-gd \
+        php${PHP_VERSION}-xml \
+        php${PHP_VERSION}-mbstring \
+        php${PHP_VERSION}-memcached \
+        php${PHP_VERSION}-imagick \
+        php${PHP_VERSION}-intl \
+        php${PHP_VERSION}-bcmath \
+        php${PHP_VERSION}-bz2 \
+        php${PHP_VERSION}-gettext \
+        php${PHP_VERSION}-gmp \
+        php${PHP_VERSION}-imap \
+        php${PHP_VERSION}-odbc \
+        php${PHP_VERSION}-soap \
+        php${PHP_VERSION}-sqlite3 \
+        php${PHP_VERSION}-tidy \
+        php${PHP_VERSION}-zip \
+        php${PHP_VERSION}-curl \
+        php${PHP_VERSION}-cli \
+        php${PHP_VERSION}-common \
+        ${OPCACHE_PKG} \
+        php${PHP_VERSION}-readline && \
+    apt-get -y autoremove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Tweaks to give Apache/PHP write permissions to the app
-RUN usermod -u ${BOOT2DOCKER_ID} www-data && \
-    usermod -G staff www-data && \
-    useradd -r mysql && \
-    usermod -G staff mysql && \
-    groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1) && \
-    groupmod -g ${BOOT2DOCKER_GID} staff
+RUN sed -ri \
+        -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" \
+        -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" \
+        -e "s/^memory_limit.*/memory_limit = ${PHP_MEMORY_LIMIT}/" \
+        -e "s/^max_execution_time.*/max_execution_time = ${PHP_MAX_EXECUTION_TIME}/" \
+        -e "s/^;date.timezone.*/date.timezone = Europe\/London/" \
+        -e "s|;sendmail_path =|sendmail_path = /usr/sbin/ssmtp -t|" \
+        -e "s|^;error_log = syslog|error_log = /dev/stderr|" \
+        /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -ri \
+        -e "s/;date.timezone =/date.timezone = UTC/g" \
+        -e "s|^;error_log = syslog|error_log = /dev/stderr|" \
+        /etc/php/${PHP_VERSION}/cli/php.ini
 
-# Install packages
-ENV DEBIAN_FRONTEND noninteractive
-RUN apt update && apt-get install -y software-properties-common python3-launchpadlib
-RUN LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
-  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4F4EA0AAE5267A6C && \
-  apt-get update && \
-  apt-get -y upgrade && \
-  OPCACHE_PKG=$(if [ "${PHP_VERSION}" != "8.5" ]; then echo "php${PHP_VERSION}-opcache"; fi) && \
-  apt-get -y install supervisor \
-      vim \
-      nano \
-      wget \
-      git \
-      tree \
-      cron \
-      apache2 \
-      libapache2-mod-php${PHP_VERSION} \
-      mariadb-server \
-      pwgen \
-      ftp \
-      ftp-ssl \
-      ssmtp \
-      php${PHP_VERSION}-ftp \
-      php${PHP_VERSION}-ldap \
-      php${PHP_VERSION}-pdo-mysql \
-      php${PHP_VERSION}-mysql \
-      php${PHP_VERSION}-apcu \
-      php${PHP_VERSION}-gd \
-      php${PHP_VERSION}-xml \
-      php${PHP_VERSION}-mbstring \
-      php${PHP_VERSION}-memcached \
-      php${PHP_VERSION}-imagick \
-      php${PHP_VERSION}-intl \
-      php${PHP_VERSION}-bcmath \
-      php${PHP_VERSION}-bz2 \
-      php${PHP_VERSION}-gettext \
-      php${PHP_VERSION}-gmp \
-      php${PHP_VERSION}-imap \
-      php${PHP_VERSION}-odbc \
-      php${PHP_VERSION}-soap \
-      php${PHP_VERSION}-sqlite3 \
-      php${PHP_VERSION}-tidy \
-      php${PHP_VERSION}-zip \
-      php${PHP_VERSION}-curl \
-      php${PHP_VERSION}-cli \
-      php${PHP_VERSION}-common \
-      ${OPCACHE_PKG} \
-      php${PHP_VERSION}-readline \
-      zip \
-      unzip \
-      curl && \
-  apt-get -y autoremove && \
-  apt-get -y clean && \
-  echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-# Add image configuration and scripts
-ADD start-apache2.sh /start-apache2.sh
-ADD run.sh /run.sh
-RUN chmod 755 /*.sh
-ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
-ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-ADD supervisord-cron.conf /etc/supervisor/conf.d/supervisord-cron.conf
-ADD supervisord.conf /etc/supervisor/supervisord.conf
-
-# Remove pre-installed database
-RUN rm -rf /var/lib/mysql
-
-# Add MySQL utils
-ADD mysql_init.sh /mysql_init.sh
-
-# Add phpmyadmin
-RUN wget -O /tmp/phpmyadmin.tar.gz https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz
-RUN tar xfvz /tmp/phpmyadmin.tar.gz -C /var/www
-RUN ln -s /var/www/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages /var/www/phpmyadmin
-RUN mv /var/www/phpmyadmin/config.sample.inc.php /var/www/phpmyadmin/config.inc.php
-
-RUN echo "Updating settings for PHP ${PHP_VERSION}" && \
-        sed -ri -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^post_max_size.*/post_max_size = ${PHP_POST_MAX_SIZE}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^memory_limit.*/memory_limit = ${PHP_MEMORY_LIMIT}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^max_execution_time.*/max_execution_time = ${PHP_MAX_EXECUTION_TIME}/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s/^;date.timezone.*/date.timezone = Europe\/London/" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s|;sendmail_path =|sendmail_path = /usr/sbin/ssmtp -t|" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e  "s/;date.timezone =/date.timezone = UTC/g" /etc/php/${PHP_VERSION}/cli/php.ini \
-        -e "s|^;error_log = syslog|error_log = /dev/stderr|" /etc/php/${PHP_VERSION}/apache2/php.ini \
-        -e "s|^;error_log = syslog|error_log = /dev/stderr|" /etc/php/${PHP_VERSION}/cli/php.ini
-
-# Add composer
+# Add composer - verify installer signature before executing (official procedure)
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    EXPECTED_SIG="$(php -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')" && \
+    ACTUAL_SIG="$(php -r 'echo hash_file("sha384", "composer-setup.php");')" && \
+    if [ "$EXPECTED_SIG" != "$ACTUAL_SIG" ]; then echo 'ERROR: Composer installer signature mismatch' >&2; rm composer-setup.php; exit 1; fi && \
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer
 
-# config to enable .htaccess
-ADD apache_default /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite proxy_http headers expires
-
-# enable real IP logging
-RUN a2enmod remoteip && echo "RemoteIPHeader X-Forwarded-For" > /etc/apache2/conf-available/remoteip.conf && \
-    echo "RemoteIPInternalProxy 10.0.0.0/8" >> /etc/apache2/conf-available/remoteip.conf && \
-    a2enconf remoteip
-
-RUN echo "# log apache to stderr" && \
-        ln -sf /dev/stderr /var/log/apache2/access.log && \
-        ln -sf /dev/stderr /var/log/apache2/error.log
-
-
- RUN echo "# Listen only on IPv4 addresses" && \
-    sed -i 's/^Listen .*/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
-
-
-# Configure /app folder with sample app
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
-ADD index.php /app
-ADD phpinfo.php /app
-
-RUN echo "Allowing Apache/PHP to write to the app" && \
-        chown -R www-data:staff /var/www && \
-        chown -R www-data:staff /app
-
-RUN echo "Editing APACHE_RUN_GROUP environment variable" && \
-        sed -i "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=staff/" /etc/apache2/envvars
-
-RUN echo "Setting up MySQL directories" && \
-        mkdir -p /var/run/mysqld && \
-        mkdir -p /var/log/mysql && \
-        chown -R mysql:mysql /var/run/mysqld && \
-        chown -R mysql:mysql /var/log/mysql
-
-# clean up
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Verify PHP extensions — derived automatically from installed deb packages.
+# Three checks per extension:
+#   exit 20 — extension not loaded by php -m
+#   exit 30 — .so file missing on disk
+#   exit 40 — .so has unresolved runtime dependencies (ldd)
+RUN php_ver=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;') && \
+    ext_dir=$(php -r 'echo PHP_EXTENSION_DIR;') && \
+    skip="cli|common|dev|dbg|pdo-mysql" && \
+    loaded_exts=$(php -m 2>/dev/null | tr '[:upper:]' '[:lower:]') && \
+    dpkg -l "php${php_ver}-*" 2>/dev/null | awk '/^ii/{print $2}' | \
+    while IFS= read -r pkg; do \
+        ext="${pkg#php${php_ver}-}"; \
+        echo "${ext}" | grep -qE "^(${skip})$" && continue; \
+        if [ "${ext}" = "mysql" ]; then \
+            exts="mysqli pdo_mysql"; \
+        else \
+            exts="${ext}"; \
+        fi; \
+        for e in ${exts}; do \
+            if [ "${e}" = "opcache" ]; then \
+                echo "${loaded_exts}" | grep -qi "opcache" \
+                    || { echo "Missing PHP extension: ${e}"; exit 20; }; \
+            else \
+                echo "${loaded_exts}" | grep -qi "^${e}$" \
+                    || { echo "Missing PHP extension: ${e}"; exit 20; }; \
+            fi; \
+            ext_so="${ext_dir}/${e}.so"; \
+            [ -f "${ext_so}" ] \
+                || { echo "Missing .so for extension: ${e} (${ext_so})"; exit 30; }; \
+            if ldd "${ext_so}" 2>&1 | grep -q "not found"; then \
+                echo "Missing runtime dependency for ${e}.so"; exit 40; \
+            fi; \
+        done; \
+    done && \
+    echo "PHP ${php_ver}: all extensions verified OK (php -m, .so, ldd)"
 
 # Set working directory
 WORKDIR /app
