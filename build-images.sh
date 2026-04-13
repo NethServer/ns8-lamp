@@ -15,24 +15,83 @@ repobase="${REPOBASE:-ghcr.io/nethserver}"
 # Configure the image name
 reponame="lamp"
 
-
 # Define PHP versions to build
 PHP_VERSIONS=("7.4" "8.0" "8.1" "8.2" "8.3" "8.4" "8.5")
 PHPMYADMIN_VERSION="5.2.3"
 
-# Build images for each PHP version
-for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
-    echo "Building lamp-server for PHP ${PHP_VERSION}..."
-    podman build \
-        --force-rm \
-        --layers \
-        --tag "${repobase}/lamp-server-php${PHP_VERSION}" \
-        --build-arg "PHP_VERSION=${PHP_VERSION}" \
-        --build-arg "PHPMYADMIN_VERSION=${PHPMYADMIN_VERSION}" \
-        container
+# Secure temp dir for FIFO (avoids TOCTOU race of mktemp -u)
+tmpdir=$(mktemp -d)
+result_fifo="${tmpdir}/result.fifo"
+mkfifo "${result_fifo}"
+# Open FIFO read-write to avoid blocking on open (no writer needed yet)
+exec 3<> "${result_fifo}"
 
-    images+=("${repobase}/lamp-server-php${PHP_VERSION}")
+declare -a pids=()
+
+kill_all_builds() {
+    for pid in "${pids[@]}"; do
+        pkill -P "${pid}" 2>/dev/null || true  # kill podman and other children first
+        kill "${pid}" 2>/dev/null || true       # then kill the bash wrapper
+    done
+}
+trap 'kill_all_builds; exec 3<&-; exec 3>&-; rm -rf "${tmpdir}"' EXIT
+trap 'kill_all_builds; exit 130' INT
+trap 'kill_all_builds; exit 143' TERM
+
+# Build the shared base image once (common packages, phpMyAdmin, Apache config...).
+# Uses the localhost/ prefix so it is treated as a local image and never pulled
+# from or pushed to a remote registry.
+BASE_IMAGE="localhost/lamp-base-build"
+echo "Building shared base image..."
+podman build \
+    --force-rm \
+    --layers \
+    --tag "${BASE_IMAGE}" \
+    --build-arg "PHPMYADMIN_VERSION=${PHPMYADMIN_VERSION}" \
+    --file container/Containerfile.base \
+    container
+
+# Build all PHP version images in parallel
+echo "Building PHP version images in parallel..."
+for PHP_VERSION in "${PHP_VERSIONS[@]}"; do
+    echo "  Starting build for PHP ${PHP_VERSION}..."
+    (
+        result=0
+        # Reports result to FIFO on exit; handles normal exit and SIGTERM.
+        trap 'printf "%s %d\n" "${PHP_VERSION}" "${result}" >"${result_fifo}" 2>/dev/null || true' EXIT
+        set -o pipefail
+        podman build \
+            --force-rm \
+            --layers \
+            --pull-never \
+            --tag "${repobase}/lamp-server-php${PHP_VERSION}" \
+            --build-arg "BASE_IMAGE=${BASE_IMAGE}" \
+            --build-arg "PHP_VERSION=${PHP_VERSION}" \
+            --file container/Containerfile \
+            container 2>&1 | sed -u "s/^/[PHP ${PHP_VERSION}] /" || result=$?
+    ) &
+    pids+=("$!")
 done
+
+# Read results in completion order; stop everything on first failure
+total=${#PHP_VERSIONS[@]}
+for (( completed=0; completed<total; completed++ )); do
+    read -r done_version done_result <&3
+    if [[ "${done_result}" -ne 0 ]]; then
+        echo "[PHP ${done_version}] BUILD FAILED — killing remaining builds..." >&2
+        podman rmi "${BASE_IMAGE}" 2>/dev/null || true
+        exit 1
+    fi
+    echo "[PHP ${done_version}] BUILD OK"
+    images+=("${repobase}/lamp-server-php${done_version}")
+done
+
+# Reap all background build jobs to avoid zombies
+wait "${pids[@]}"
+
+# Remove the base image: it is an intermediate build artifact, not meant to be published
+echo "Removing intermediate base image..."
+podman rmi "${BASE_IMAGE}" 2>/dev/null || true
 
 # Create a new empty container image
 container=$(buildah from scratch)
@@ -78,10 +137,10 @@ images+=("${repobase}/${reponame}")
 #
 
 #
-# Setup CI when pushing to Github. 
+# Setup CI when pushing to GitHub.
 # Warning! docker::// protocol expects lowercase letters (,,)
 if [[ -n "${CI}" ]]; then
-    # Set output value for Github Actions
+    # Set output value for GitHub Actions
     printf "images=%s\n" "${images[*],,}" >> "${GITHUB_OUTPUT}"
 else
     # Just print info for manual push

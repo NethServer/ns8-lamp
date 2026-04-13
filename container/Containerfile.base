@@ -1,0 +1,107 @@
+FROM docker.io/ubuntu:noble-20260217
+LABEL org.opencontainers.image.authors="stephane de Labrusse <stephdl@de-labrusse.fr>"
+ENV REFRESHED_AT 2026-02-17
+
+# based on Matthew Rayner <hello@rayner.io> https://github.com/mattrayner/docker-lamp
+# based on dgraziotin/lamp
+# MAINTAINER Daniel Graziotin <daniel@ineed.coffee>
+# updated for Ubuntu 20.04 LTS/PHP 7.4/PHP 8.0 Ferdinand Kasper <fkasper@modus-operandi.at>
+
+ENV DOCKER_USER_ID 501
+ENV DOCKER_USER_GID 20
+
+ENV BOOT2DOCKER_ID 1005
+ENV BOOT2DOCKER_GID 50
+
+ARG PHPMYADMIN_VERSION
+ENV PHPMYADMIN_VERSION=$PHPMYADMIN_VERSION
+# Fail early with a clear message if PHPMYADMIN_VERSION was not provided.
+RUN test -n "$PHPMYADMIN_VERSION" || \
+    { echo "ERROR: PHPMYADMIN_VERSION build-arg is required. Pass --build-arg PHPMYADMIN_VERSION=<version>." >&2; exit 1; }
+
+# Tweaks to give Apache/PHP write permissions to the app
+RUN usermod -u ${BOOT2DOCKER_ID} www-data && \
+    usermod -G staff www-data && \
+    useradd -r mysql && \
+    usermod -G staff mysql && \
+    groupmod -g $(($BOOT2DOCKER_GID + 10000)) $(getent group $BOOT2DOCKER_GID | cut -d: -f1) && \
+    groupmod -g ${BOOT2DOCKER_GID} staff
+
+# Add PHP PPA and install common packages.
+# software-properties-common and python3-launchpadlib are only needed to add the PPA
+# and are purged in the same layer to avoid bloating the image.
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends software-properties-common python3-launchpadlib && \
+    LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
+    apt-get update && \
+    apt-get -y install --no-install-recommends \
+        supervisor \
+        vim \
+        nano \
+        wget \
+        git \
+        tree \
+        cron \
+        apache2 \
+        mariadb-server \
+        pwgen \
+        ftp \
+        ftp-ssl \
+        ssmtp \
+        zip \
+        unzip \
+        curl && \
+    apt-get -y purge --auto-remove software-properties-common python3-launchpadlib && \
+    apt-get -y autoremove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Add image configuration and scripts
+ADD start-apache2.sh /start-apache2.sh
+ADD run.sh /run.sh
+RUN chmod 755 /*.sh
+ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
+ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+ADD supervisord-cron.conf /etc/supervisor/conf.d/supervisord-cron.conf
+ADD supervisord.conf /etc/supervisor/supervisord.conf
+
+# Remove pre-installed database
+RUN rm -rf /var/lib/mysql
+
+# Add MySQL utils
+ADD mysql_init.sh /mysql_init.sh
+
+# Add phpmyadmin: download, extract, configure and remove archive in a single layer
+RUN wget -P /tmp https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz && \
+    wget -P /tmp https://files.phpmyadmin.net/phpMyAdmin/${PHPMYADMIN_VERSION}/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz.sha256 && \
+    (cd /tmp && sha256sum --check phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz.sha256) && \
+    tar xfz /tmp/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz -C /var/www && \
+    ln -s /var/www/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages /var/www/phpmyadmin && \
+    mv /var/www/phpmyadmin/config.sample.inc.php /var/www/phpmyadmin/config.inc.php && \
+    rm /tmp/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz /tmp/phpMyAdmin-${PHPMYADMIN_VERSION}-all-languages.tar.gz.sha256
+
+# config to enable .htaccess
+ADD apache_default /etc/apache2/sites-available/000-default.conf
+RUN a2enmod rewrite proxy_http headers expires && \
+    a2enmod remoteip && \
+    echo "RemoteIPHeader X-Forwarded-For" > /etc/apache2/conf-available/remoteip.conf && \
+    echo "RemoteIPInternalProxy 10.0.0.0/8" >> /etc/apache2/conf-available/remoteip.conf && \
+    a2enconf remoteip && \
+    ln -sf /dev/stderr /var/log/apache2/access.log && \
+    ln -sf /dev/stderr /var/log/apache2/error.log && \
+    sed -i 's/^Listen .*/Listen 0.0.0.0:80/' /etc/apache2/ports.conf
+
+# Configure /app folder with sample app
+RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
+ADD index.php /app
+ADD phpinfo.php /app
+
+RUN chown -R www-data:staff /var/www && \
+    chown -R www-data:staff /app && \
+    sed -i "s/export APACHE_RUN_GROUP=www-data/export APACHE_RUN_GROUP=staff/" /etc/apache2/envvars && \
+    mkdir -p /var/run/mysqld && \
+    mkdir -p /var/log/mysql && \
+    chown -R mysql:mysql /var/run/mysqld && \
+    chown -R mysql:mysql /var/log/mysql
