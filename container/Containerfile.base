@@ -2,11 +2,6 @@ FROM docker.io/ubuntu:noble-20260217
 LABEL org.opencontainers.image.authors="stephane de Labrusse <stephdl@de-labrusse.fr>"
 ENV REFRESHED_AT 2026-02-17
 
-# based on Matthew Rayner <hello@rayner.io> https://github.com/mattrayner/docker-lamp
-# based on dgraziotin/lamp
-# MAINTAINER Daniel Graziotin <daniel@ineed.coffee>
-# updated for Ubuntu 20.04 LTS/PHP 7.4/PHP 8.0 Ferdinand Kasper <fkasper@modus-operandi.at>
-
 ENV DOCKER_USER_ID 501
 ENV DOCKER_USER_GID 20
 
