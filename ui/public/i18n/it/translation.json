@@ -82,7 +82,7 @@
         "get-module-info": "Ottieni informazioni sul modulo",
         "get-name": "Ottieni nome",
         "list-backup-repositories": "Elenca i repository di backup",
-        "list-backups": "Elenca i backup",
+        "list-backups": "Elenca backup",
         "list-installed-modules": "Elenca i moduli installati"
     },
     "error": {
