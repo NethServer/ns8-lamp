@@ -86,6 +86,11 @@
       "type": "string",
       "title": "PHP Version",
       "description": "Version of PHP to use"
+    },
+    "apache_document_root": {
+      "type": "string",
+      "title": "Apache document root subdirectory",
+      "description": "Subdirectory under /var/www/html to use as DocumentRoot (e.g. htdocs)"
     }
   }
 }
