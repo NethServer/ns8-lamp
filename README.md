@@ -92,6 +92,18 @@ chown -R www-data:staff wp-admin/
   
 ![Capture d’écran du 2024-08-27 15-42-22](https://github.com/user-attachments/assets/2f57fe3d-a144-4506-9e4e-9668560e7060)
 
+### Apache document root subdirectory
+
+By default, Apache serves files from `/var/www/html` (which is a symlink to `/app`). If your application stores its public files in a subdirectory (e.g. `public` or `htdocs`), you can set the `apache_document_root` parameter in `configure-module`.
+
+For example, to serve from `/app/public`:
+
+```
+api-cli run configure-module --agent module/lamp1 --data '{"apache_document_root": "public", ...}'
+```
+
+Leave the parameter empty (default) to keep serving from `/app` directly.
+
 ### Custom php or apache directives
 
 A `.htaccess` file is automatically created in the `/app` directory on first start, pre-populated with commented-out examples of common directives. You can edit it directly to apply custom PHP or Apache settings — it will be read and applied accordingly.
@@ -188,6 +200,7 @@ Launch `configure-module`, by setting the following parameters:
 - `php_max_execution_time`: maximum execution time of each PHP script in seconds
 - `php_version`: PHP version to use (e.g. `8.3`)
 - `phpmyadmin_enabled`: enable or disable phpMyAdmin (true/false)
+- `apache_document_root`: subdirectory under `/var/www/html` to use as Apache `DocumentRoot` (e.g. `public`). Leave empty to serve from `/var/www/html` directly.
 
 
 Example:
@@ -207,7 +220,8 @@ api-cli run configure-module --agent module/lamp1 --data - <<EOF
     "php_memory_limit": "512",
     "php_max_execution_time": "600",
     "php_version": "8.3",
-    "phpmyadmin_enabled": true
+    "phpmyadmin_enabled": true,
+    "apache_document_root": ""
 }
 EOF
 ```
