@@ -313,6 +313,20 @@
                         : $tc('settings.second', parseInt(MaxExecutionTime))
                     "
                   />
+                  <NsTextInput
+                    :label="$t('settings.apache_document_root')"
+                    v-model.trim="apache_document_root"
+                    :placeholder="$t('settings.apache_document_root_placeholder')"
+                    :helper-text="$t('settings.apache_document_root_helper')"
+                    :invalid-message="$t(error.apache_document_root)"
+                    :disabled="stillLoading"
+                    ref="apache_document_root"
+                    class="mg-bottom"
+                  >
+                    <template #tooltip>{{
+                      $t('settings.apache_document_root_tooltip')
+                    }}</template>
+                  </NsTextInput>
                 </template>
               </cv-accordion-item>
             </cv-accordion>
@@ -408,6 +422,7 @@ export default {
       mysql_admin_pass: "",
       firstConfig: true,
       PhpVersion: "8.3",
+      apache_document_root: "",
       loading: {
         getConfiguration: false,
         configureModule: false,
@@ -428,6 +443,7 @@ export default {
         php_memory_limit: "",
         getStatus: false,
         MaxExecutionTime: "",
+        apache_document_root: "",
       },
     };
   },
@@ -573,6 +589,7 @@ export default {
       this.phpmyadmin_enabled = config.phpmyadmin_enabled;
       this.PhpVersion = config.php_version;
       this.MaxExecutionTime = config.php_max_execution_time.toString();
+      this.apache_document_root = config.apache_document_root || "";
       this.focusElement("host");
     },
     validateConfigureModule() {
@@ -703,6 +720,7 @@ export default {
             phpmyadmin_enabled: this.phpmyadmin_enabled,
             php_version: this.PhpVersion,
             php_max_execution_time: this.MaxExecutionTime.toString(),
+            apache_document_root: this.apache_document_root,
           },
           extra: {
             title: this.$t("settings.instance_configuration", {
