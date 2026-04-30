@@ -32,5 +32,7 @@ agent.bind_user_domains([os.environ.get('LAMP_LDAP_DOMAIN','')])
 
 agent.set_env("PHP_VERSION", data.get("php_version",'8.3'))
 
+agent.set_env("APACHE_DOCUMENT_ROOT", data.get("apache_document_root", ''))
+
 agent.set_env("TRAEFIK_HOST", data["host"])
 agent.set_env("TRAEFIK_HTTP2HTTPS", data.get("http2https", True))

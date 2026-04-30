@@ -17,7 +17,8 @@
       "phpmyadmin_enabled": true,
       "php_version": "8.3",
       "php_max_execution_time": "600",
-      "php_memory_limit": "512M"
+      "php_memory_limit": "512M",
+      "apache_document_root": "htdocs"
     }
   ],
   "type": "object",
@@ -100,6 +101,11 @@
       "type": "string",
       "title": "PHP max execution time",
       "description": "Maximum execution time of each script, in seconds"
+    },
+    "apache_document_root": {
+      "type": "string",
+      "title": "Apache document root subdirectory",
+      "description": "Subdirectory under /var/www/html to use as DocumentRoot (e.g. htdocs)"
     }
   }
 }
