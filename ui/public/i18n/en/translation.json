@@ -70,7 +70,11 @@
         "php_max_execution_time_helper": "Enter 0 to set no time limit, otherwise enter the maximum execution time in seconds",
         "megabytes": "MB",
         "second": "second | seconds",
-        "unlimited": "Unlimited"
+        "unlimited": "Unlimited",
+        "apache_document_root": "Apache document root subdirectory",
+        "apache_document_root_placeholder": "e.g. public",
+        "apache_document_root_helper": "Subdirectory under /var/www/html used as DocumentRoot. Leave empty to use /var/www/html directly.",
+        "apache_document_root_tooltip": "Set this if your application serves files from a subdirectory. Leave empty if not needed."
     },
     "about": {
         "title": "About"
