@@ -54,6 +54,17 @@ echo "Updating settings for PHP CLI ${PHP_VERSION}" && \
 echo "Editing phpmyadmin config" && \
     sed -i "s/cfg\['blowfish_secret'\] = ''/cfg['blowfish_secret'] = '`openssl rand -hex 16`'/" /var/www/phpmyadmin/config.inc.php
 
+# Update DocumentRoot if APACHE_DOCUMENT_ROOT is provided
+if [[ -n "$APACHE_DOCUMENT_ROOT" ]]; then
+    # Strip any leading slash to avoid double slashes in the path
+    APACHE_DOCUMENT_ROOT="${APACHE_DOCUMENT_ROOT#/}"
+    echo "Setting DocumentRoot to /var/www/html/${APACHE_DOCUMENT_ROOT}"
+    sed -i \
+        -e "s|DocumentRoot /var/www/html|DocumentRoot /var/www/html/${APACHE_DOCUMENT_ROOT}|" \
+        -e "s|<Directory /var/www/html>|<Directory /var/www/html/${APACHE_DOCUMENT_ROOT}>|" \
+        /etc/apache2/sites-available/000-default.conf
+fi
+
 # Check if phpMyAdmin is enabled
 if [[ "$PHPMYADMIN_ENABLED" == "False" ]]; then
     echo "Disabling phpMyAdmin"
