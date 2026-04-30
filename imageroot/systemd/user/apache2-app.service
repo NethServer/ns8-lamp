@@ -43,6 +43,7 @@ ExecStart=/usr/bin/podman run --conmon-pidfile %t/apache2-app.pid \
     --env PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT} \
     --env PHP_MAX_EXECUTION_TIME=${PHP_MAX_EXECUTION_TIME} \
     --env PHPMYADMIN_ENABLED=${PHPMYADMIN_ENABLED} \
+    --env APACHE_DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT} \
     ${IMAGE_URL_TAG}
 ExecStartPost=runagent wait-after-apache
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/apache2-app.ctr-id -t 10
