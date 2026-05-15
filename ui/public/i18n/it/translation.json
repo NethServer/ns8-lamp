@@ -89,7 +89,7 @@
         "error": "Errore",
         "generic_error": "Qualcosa è andato storto",
         "validation_error": "Errore di validazione",
-        "network_error": "Errore di rete",
+        "network_error": "Errore di rete. Controlla la connessione e ricarica la pagina.",
         "network_timeout": "Timeout di rete",
         "401": "Autenticazione non valida",
         "403": "Operazione non autorizzata",
