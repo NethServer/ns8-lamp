@@ -21,9 +21,9 @@
         "no_images": "Keine Bilder",
         "no_volumes": "Keine Volumes",
         "lamp_webapp": "LAMP-Webanwendung",
-        "not_configured": "Nicht konfiguriert",
+        "not_configured": "nicht konfiguriert",
         "open_webapp": "LAMP-Webanwendung öffnen",
-        "configure": "Konfigurieren",
+        "configure": "konfigurieren",
         "open_phpmyadmin": "phpMyAdmin öffnen",
         "configure_mysql_database": "MySQL-Datenbank konfigurieren",
         "lamp_phpmyadmin": "LAMP phpMyAdmin",
@@ -67,7 +67,10 @@
         "select_php_version": "PHP-Version auswählen",
         "container_version_will_be_installed": "Container-Version wird installiert",
         "select_php_max_execution_time_limit": "Maximales PHP-Ausführungs-Zeitlimit",
-        "php_max_execution_time_helper": "Geben Sie 0 ein, um kein Zeitlimit zu setzen, andernfalls geben Sie die maximale Ausführungszeit in Sekunden ein"
+        "php_max_execution_time_helper": "Geben Sie 0 ein, um kein Zeitlimit zu setzen, andernfalls geben Sie die maximale Ausführungszeit in Sekunden ein",
+        "megabytes": "MB",
+        "second": "Sekunde | Sekunden",
+        "unlimited": "unlimitiert"
     },
     "about": {
         "title": "Über"
@@ -81,8 +84,8 @@
         "configure-module": "Modul konfigurieren",
         "get-module-info": "Modulinformationen abrufen",
         "get-name": "Name abrufen",
-        "list-backup-repositories": "Backup-Repositories auflisten",
-        "list-backups": "Backups auflisten",
+        "list-backup-repositories": "Sicherungs-Ziele auflisten",
+        "list-backups": "Datensicherungen auflisten",
         "list-installed-modules": "Installierte Module auflisten"
     },
     "error": {
@@ -92,7 +95,7 @@
         "network_error": "Netzwerkfehler",
         "network_timeout": "Netzwerkzeitüberschreitung",
         "401": "Ungültige Authentifizierung",
-        "403": "Operation nicht autorisiert",
+        "403": "Vorgang nicht zulässig",
         "404": "Ressource nicht gefunden",
         "cannot_retrieve_module_info": "Modulinformationen können nicht abgerufen werden",
         "cannot_retrieve_installed_modules": "Installierte Module können nicht abgerufen werden",
