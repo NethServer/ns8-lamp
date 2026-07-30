@@ -316,7 +316,9 @@
                   <NsTextInput
                     :label="$t('settings.apache_document_root')"
                     v-model.trim="apache_document_root"
-                    :placeholder="$t('settings.apache_document_root_placeholder')"
+                    :placeholder="
+                      $t('settings.apache_document_root_placeholder')
+                    "
                     :helper-text="$t('settings.apache_document_root_helper')"
                     :invalid-message="$t(error.apache_document_root)"
                     :disabled="stillLoading"
@@ -324,7 +326,7 @@
                     class="mg-bottom"
                   >
                     <template #tooltip>{{
-                      $t('settings.apache_document_root_tooltip')
+                      $t("settings.apache_document_root_tooltip")
                     }}</template>
                   </NsTextInput>
                 </template>
