@@ -23,6 +23,7 @@ for evar in [
         "PHP_MEMORY_LIMIT",
         "PHP_MAX_EXECUTION_TIME",
         "PHPMYADMIN_ENABLED",
-        "PHP_VERSION"
+        "PHP_VERSION",
+        "APACHE_DOCUMENT_ROOT"
     ]:
     agent.set_env(evar, original_environment[evar])
