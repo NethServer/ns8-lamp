@@ -26,5 +26,6 @@ configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='conf
     "php_max_execution_time": renv["PHP_MAX_EXECUTION_TIME"],
     "phpmyadmin_enabled": renv["PHPMYADMIN_ENABLED"] == "True",
     "php_version": renv["PHP_VERSION"],
+    "apache_document_root": renv["APACHE_DOCUMENT_ROOT"],
 })
 agent.assert_exp(configure_retval['exit_code'] == 0, "The configure-module subtask failed!")
