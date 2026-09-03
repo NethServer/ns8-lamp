@@ -1,4 +1,4 @@
-FROM docker.io/ubuntu:noble-20260730.1
+FROM docker.io/ubuntu:noble-20260810
 LABEL org.opencontainers.image.authors="stephane de Labrusse <stephdl@de-labrusse.fr>"
 ENV REFRESHED_AT 2026-02-17
 
