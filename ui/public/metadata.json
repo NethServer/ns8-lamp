@@ -11,9 +11,9 @@
     }
   ],
   "docs": {
-    "documentation_url": "https://github.com/nethserver/ns8-lamp",
-    "bug_url": "https://github.com/nethserver/dev",
-    "code_url": "https://github.com/nethserver/ns8-lamp"
+    "documentation_url": "https://docs.nethserver.org/docs/administrator-manual/nethforge/lamp",
+    "bug_url": "https://github.com/NethServer/dev",
+    "code_url": "https://github.com/NethServer/ns8-lamp"
   },
   "source": "ghcr.io/nethserver/lamp"
 }
