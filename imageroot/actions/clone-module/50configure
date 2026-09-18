@@ -8,6 +8,9 @@
 import agent
 import os
 
+# A module installed before one of these vars existed, then upgraded
+# without being reconfigured, won't have it set: fall back to the same
+# defaults the UI uses for a new install instead of crashing.
 configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data={
     "host": os.environ["TRAEFIK_HOST"],
     "http2https": os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
@@ -16,11 +19,11 @@ configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='conf
     "create_mysql_user": os.environ["CREATE_MYSQL_USER"] == "True",
     "mysql_admin_pass": agent.read_envfile("password.env")["MYSQL_ADMIN_PASS"],
     "mysql_user_pass": agent.read_envfile("password.env")["MYSQL_USER_PASS"],
-    "php_upload_max_filesize": os.environ["PHP_UPLOAD_MAX_FILESIZE"].removesuffix('M'),
-    "php_memory_limit": os.environ["PHP_MEMORY_LIMIT"].removesuffix('M'),
-    "php_max_execution_time": os.environ["PHP_MAX_EXECUTION_TIME"],
-    "phpmyadmin_enabled": os.environ["PHPMYADMIN_ENABLED"] == "True",
-    "php_version": os.environ["PHP_VERSION"],
-    "apache_document_root": os.environ["APACHE_DOCUMENT_ROOT"],
+    "php_upload_max_filesize": os.environ.get("PHP_UPLOAD_MAX_FILESIZE", "100M").removesuffix('M'),
+    "php_memory_limit": os.environ.get("PHP_MEMORY_LIMIT", "512M").removesuffix('M'),
+    "php_max_execution_time": os.environ.get("PHP_MAX_EXECUTION_TIME", "600"),
+    "phpmyadmin_enabled": os.environ.get("PHPMYADMIN_ENABLED", "True") == "True",
+    "php_version": os.environ.get("PHP_VERSION", "8.3"),
+    "apache_document_root": os.environ.get("APACHE_DOCUMENT_ROOT", ""),
 })
 agent.assert_exp(configure_retval['exit_code'] == 0, "The configure-module subtask failed!")

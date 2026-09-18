@@ -26,4 +26,5 @@ for evar in [
         "PHP_VERSION",
         "APACHE_DOCUMENT_ROOT"
     ]:
-    agent.set_env(evar, original_environment.get(evar, ""))
+    if evar in original_environment:
+        agent.set_env(evar, original_environment[evar])
