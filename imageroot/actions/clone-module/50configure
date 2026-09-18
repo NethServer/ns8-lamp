@@ -8,7 +8,7 @@
 import agent
 import os
 
-configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data={
+configure_data = {
     "host": os.environ["TRAEFIK_HOST"],
     "http2https": os.environ["TRAEFIK_HTTP2HTTPS"] == "True",
     "mysql_user_name": os.environ["MYSQL_USER_NAME"],
@@ -21,6 +21,9 @@ configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='conf
     "php_max_execution_time": os.environ["PHP_MAX_EXECUTION_TIME"],
     "phpmyadmin_enabled": os.environ["PHPMYADMIN_ENABLED"] == "True",
     "php_version": os.environ["PHP_VERSION"],
-    "apache_document_root": os.environ["APACHE_DOCUMENT_ROOT"],
-})
+}
+if "APACHE_DOCUMENT_ROOT" in os.environ:
+    configure_data["apache_document_root"] = os.environ["APACHE_DOCUMENT_ROOT"]
+
+configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data=configure_data)
 agent.assert_exp(configure_retval['exit_code'] == 0, "The configure-module subtask failed!")

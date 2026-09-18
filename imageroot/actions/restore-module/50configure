@@ -13,7 +13,7 @@ import os
 request = json.load(sys.stdin)
 renv = request['environment']
 
-configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data={
+configure_data = {
     "host": renv["TRAEFIK_HOST"],
     "http2https": renv["TRAEFIK_HTTP2HTTPS"] == "True",
     "mysql_user_name": renv["MYSQL_USER_NAME"],
@@ -26,6 +26,9 @@ configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='conf
     "php_max_execution_time": renv["PHP_MAX_EXECUTION_TIME"],
     "phpmyadmin_enabled": renv["PHPMYADMIN_ENABLED"] == "True",
     "php_version": renv["PHP_VERSION"],
-    "apache_document_root": renv["APACHE_DOCUMENT_ROOT"],
-})
+}
+if "APACHE_DOCUMENT_ROOT" in renv:
+    configure_data["apache_document_root"] = renv["APACHE_DOCUMENT_ROOT"]
+
+configure_retval = agent.tasks.run(agent_id=os.environ['AGENT_ID'], action='configure-module', data=configure_data)
 agent.assert_exp(configure_retval['exit_code'] == 0, "The configure-module subtask failed!")
